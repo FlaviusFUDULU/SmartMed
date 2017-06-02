@@ -21,7 +21,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/LogoImage"
+            android:id="@+id/Family.LogoImage"
             android:src="@mipmap/logo"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
@@ -29,24 +29,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:id="@+id/txtFirstName"
+            android:id="@+id/Family.txtFirstName"
             android:background="@drawable/input_background"
             android:hint="Prenume"
             android:padding="10dp"
             android:layout_marginTop="25dp"
-            android:layout_below="@+id/LogoImage"
+            android:layout_below="@+id/Family.LogoImage"
             android:layout_alignParentStart="true" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:id="@+id/txtLastName"
+            android:id="@+id/Family.txtLastName"
             android:background="@drawable/input_background"
             android:hint="Nume"
             android:padding="10dp"
             android:layout_marginTop="25dp"
-            android:layout_below="@+id/txtFirstName"
+            android:layout_below="@+id/Family.txtFirstName"
             android:layout_alignParentStart="true" />
 
 
@@ -55,32 +55,32 @@
             android:layout_height="50dp"
             android:maxHeight="50dp"
             android:maxWidth="50dp"
-            android:id="@+id/ProfilePicture"
+            android:id="@+id/Family.ProfilePicture"
             android:src="@mipmap/ic_launcher"
             android:layout_marginTop="25dp"
             android:layout_marginLeft="15dp"
-            android:layout_below="@+id/txtLastName"
-            android:layout_above="@+id/txtCNP"
+            android:layout_below="@+id/Family.txtLastName"
+            android:layout_above="@+id/Family.txtPacientID"
             android:layout_alignParentStart="true"
-            android:layout_alignEnd="@+id/lblViewPersonalType"/>
+            android:layout_alignStart="@+id/Family.txtLastName"/>
 
 
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/imageButtonPhoto"
+            android:id="@+id/Family.imageButtonPhoto"
             android:background="@mipmap/camera"
-            android:layout_toRightOf="@+id/ProfilePicture"
-            android:layout_below="@+id/txtLastName"
+            android:layout_toRightOf="@+id/Family.ProfilePicture"
+            android:layout_below="@+id/Family.txtLastName"
             android:layout_marginTop="17dp"
             android:layout_marginStart="20dp" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:id="@+id/imageButtonUpload"
-            android:layout_below="@+id/imageButtonPhoto"
-            android:layout_alignStart="@+id/imageButtonPhoto"
+            android:id="@+id/Family.imageButtonUpload"
+            android:layout_below="@+id/Family.imageButtonPhoto"
+            android:layout_alignStart="@+id/Family.imageButtonPhoto"
             android:background="@mipmap/folder"
             android:layout_marginStart="4dp"/>
 
@@ -89,9 +89,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Fotografiează"
-            android:id="@+id/lblTakePhoto"
-            android:layout_alignTop="@+id/imageButtonPhoto"
-            android:layout_toEndOf="@+id/imageButtonPhoto"
+            android:id="@+id/Family.lblTakePhoto"
+            android:layout_alignTop="@+id/Family.imageButtonPhoto"
+            android:layout_toEndOf="@+id/Family.imageButtonPhoto"
             android:layout_marginTop="15dp"
             android:textColor="#ffffff"/>
 
@@ -100,9 +100,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Încarcă imagine"
-            android:id="@+id/lblUploadPhoto"
-            android:layout_alignTop="@+id/imageButtonUpload"
-            android:layout_toEndOf="@+id/imageButtonUpload"
+            android:id="@+id/Family.lblUploadPhoto"
+            android:layout_alignTop="@+id/Family.imageButtonUpload"
+            android:layout_toEndOf="@+id/Family.imageButtonUpload"
             android:layout_marginTop="8dp"
             android:layout_marginStart="5dp"
             android:textColor="#ffffff"/>
@@ -111,28 +111,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:id="@+id/txtPacientID"
+            android:id="@+id/Family.txtPacientID"
             android:background="@drawable/input_background"
             android:hint="Cod unic pacient"
             android:padding="10dp"
             android:layout_marginTop="25dp"
-            android:layout_below="@+id/lblUploadPhoto"
+            android:layout_below="@+id/Family.lblUploadPhoto"
             android:layout_alignParentStart="true" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Salveaza"
-            android:id="@+id/btnSaveChanges"
+            android:id="@+id/Family.btnSaveChanges"
             android:textColor="@color/common_google_signin_btn_text_light"
             android:background="@drawable/btn_background"
-            android:layout_below="@+id/txtPacientID"
+            android:layout_below="@+id/Family.txtPacientID"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="15dp" />
 
 
         <ProgressBar
-            android:id="@+id/progressBarUpload"
+            android:id="@+id/Family.progressBarUpload"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -141,8 +141,8 @@
             android:visibility="gone"
             android:indeterminateDrawable="@drawable/progress_bar1"
             android:layout_marginBottom="10dp"
-            android:layout_toLeftOf="@+id/imageButtonUpload"
-            android:layout_below="@+id/txtSectia"
+            android:layout_toLeftOf="@+id/Family.imageButtonUpload"
+            android:layout_below="@+id/Family.txtLastName"
             android:layout_marginTop="15dp"
             >
         </ProgressBar>

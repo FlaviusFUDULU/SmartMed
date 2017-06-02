@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ffudulu.licenta.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,19 +53,8 @@ public class AccountFragment extends Fragment
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setVisibility(View.GONE);
 
-        try {
-            if (userCacherType.readCache().contains("Staff")){
-                userCacher = new FileCacher<>(getActivity(), firebaseUser.getUid());
-            }
-            else if (userCacherType.readCache().contains("Pacient")){
-                Toast.makeText(getActivity(),
-                        "Pacient",
-                        Toast.LENGTH_SHORT).show();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+        userCacher = new FileCacher<>(getActivity(), firebaseUser.getUid());
         TextView mName = (TextView) view.findViewById(R.id.cardView_text_nume);
         try {
             mName.setText(userCacher.readCache().getFirstName()+ " "

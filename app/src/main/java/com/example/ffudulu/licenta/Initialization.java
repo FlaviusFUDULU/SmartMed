@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import fragments.MainDrawer;
 import transformations.SaveImage;
+import users.UserFamily;
 import users.UserMedic;
 import users.UserPersonalData;
 
@@ -33,10 +34,12 @@ public class Initialization extends Activity {
     private DatabaseReference databaseRef;
     private FileCacher<users.UserMedic> userCacher;
     private FileCacher<users.UserPersonalData> userPacientCacher;
+    private FileCacher<users.UserFamily> userFamilyCacher;
     private final FileCacher<String> userCacherType = new FileCacher<>(Initialization.this, "type");
 
     private UserMedic userMedic = null;
     private UserPersonalData userPacient = null;
+    private UserFamily userFamily = null;
 
     private ProgressBar mProgressBarLogin;
 
@@ -80,7 +83,7 @@ public class Initialization extends Activity {
                                 for (DataSnapshot dss : ds.getChildren()) {
                                     if (dss.child(firebaseUser.getUid()).getValue() != null) {
                                         try {
-                                            if(userCacherType.readCache().contains("Staff")) {
+                                            if (userCacherType.readCache().contains("Staff")) {
                                                 userMedic = new UserMedic(
                                                         dss.child(firebaseUser.getUid())
                                                                 .getValue(UserMedic.class).getEmail(),
@@ -100,9 +103,8 @@ public class Initialization extends Activity {
                                                 Intent mDrawer = new Intent(Initialization.this, MainDrawer.class);
                                                 startActivity(mDrawer);
                                                 break;
-                                            }
-                                            else if (userCacherType.readCache().contains("Pacient")){
-                                                //Insert other uswers here!!!!!!!
+                                            } else if (userCacherType.readCache().contains("Pacient")) {
+
                                                 userPacient = new UserPersonalData(
                                                         dss.child(firebaseUser.getUid())
                                                                 .getValue(UserPersonalData.class).getFirstName(),
@@ -122,17 +124,46 @@ public class Initialization extends Activity {
                                                 mProgressBarLogin.setVisibility(View.GONE);
                                                 startActivity(mDrawer);
                                                 break;
+                                            } else if (userCacherType.readCache().contains("Family")) {
+                                                userFamily = new UserFamily(
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserFamily.class).getFirstName(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserFamily.class).getFirstName(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserFamily.class).getEmail(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserFamily.class).getPacientUID()
+                                                );
+                                                cacheData();
+                                                Intent mDrawer = new Intent(Initialization.this, MainDrawer.class);
+                                                mProgressBarLogin.setVisibility(View.GONE);
+                                                startActivity(mDrawer);
+                                                break;
                                             }
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                             Intent mModeSelect = new Intent(Initialization.this, ModeSelect.class);
                                             startActivity(mModeSelect);
                                         }
-                                    }
-                                    else{
-                                        Intent mPersonalData = new Intent(Initialization.this, SubmitPersonalData.class);
-                                        mProgressBarLogin.setVisibility(View.GONE);
-                                        startActivity(mPersonalData);
+                                    } else {
+                                        try {
+                                            if (userCacherType.readCache().contains("Staff")) {
+                                                Intent mPersonalData = new Intent(Initialization.this, SubmitPersonalData.class);
+                                                mProgressBarLogin.setVisibility(View.GONE);
+                                                startActivity(mPersonalData);
+                                            } else if (userCacherType.readCache().contains("Pacient")) {
+                                                Intent mSubmitPacient = new Intent(Initialization.this, SubmitPersonalDataPacient.class);
+                                                mProgressBarLogin.setVisibility(View.GONE);
+                                                startActivity(mSubmitPacient);
+                                            } else if (userCacherType.readCache().contains("Family")) {
+                                                Intent mSubmitFamily = new Intent(Initialization.this, SubmitPersonalDataFamily.class);
+                                                mProgressBarLogin.setVisibility(View.GONE);
+                                                startActivity(mSubmitFamily);
+                                            }
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
                             }
@@ -182,6 +213,14 @@ public class Initialization extends Activity {
                 try {
                     userPacientCacher = new FileCacher<>(Initialization.this, firebaseUser.getUid());
                     userPacientCacher.writeCache(userPacient);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (userCacherType.readCache().contains("Family")){
+                try {
+                    userFamilyCacher = new FileCacher<>(Initialization.this, firebaseUser.getUid());
+                    userFamilyCacher.writeCache(userFamily);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
