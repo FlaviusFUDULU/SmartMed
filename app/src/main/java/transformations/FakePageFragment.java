@@ -15,7 +15,7 @@ public class FakePageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootView = (RecyclerView) inflater.inflate(R.layout.fragment_page, container, false);
+        mRootView = (RecyclerView) inflater.inflate(R.layout.fragment_page_staff, container, false);
         return mRootView;
     }
 

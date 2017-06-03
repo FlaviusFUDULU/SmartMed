@@ -22,7 +22,10 @@ import com.example.ffudulu.licenta.R;
 import com.example.ffudulu.licenta.SubmitPersonalData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.kosalgeek.android.caching.FileCacher;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 import transformations.CircleTransform;
 
@@ -35,6 +38,8 @@ public class MainDrawer extends AppCompatActivity
     private View mHeaderView;
     private FirebaseUser firebaseUser;
     private ImageView mAccountImageView;
+
+    private final FileCacher<String> userCacherType = new FileCacher<>(MainDrawer.this, "type");
 
     ///???
     NavigationView navigationView = null;
@@ -155,13 +160,36 @@ public class MainDrawer extends AppCompatActivity
 
 
         if (id == R.id.nav_personal_data) {
-            AccountFragment fragmentAccount = new AccountFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_fl_content, fragmentAccount);
-            fragmentTransaction.commit();
+
+            try {
+                if(userCacherType.readCache().contains("Staff")){
+                    FragmentAccountStaff fragmentAccount = new FragmentAccountStaff();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_fl_content, fragmentAccount);
+                    fragmentTransaction.commit();
+                }
+                else if(userCacherType.readCache().contains("Pacient")){
+                    FragmentAccountPacient fragmentAccountPacient = new FragmentAccountPacient();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_fl_content, fragmentAccountPacient);
+                    fragmentTransaction.commit();
+                }
+                else if(userCacherType.readCache().contains("Family")){
+                    FragmentAccountFamily fragmentAccountFamily = new FragmentAccountFamily();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_fl_content, fragmentAccountFamily);
+                    fragmentTransaction.commit();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
         } else if (id == R.id.nav_test) {
-            AccountFragment fragmentTest = new AccountFragment();
+            FragmentAccountStaff fragmentTest = new FragmentAccountStaff();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_fl_content, fragmentTest);

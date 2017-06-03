@@ -113,9 +113,9 @@ public class Initialization extends Activity {
                                                         dss.child(firebaseUser.getUid())
                                                                 .getValue(UserPersonalData.class).getEmail(),
                                                         dss.child(firebaseUser.getUid())
-                                                                .getValue(UserPersonalData.class).getCNP(),
+                                                                .getValue(UserPersonalData.class).getCnp(),
                                                         dss.child(firebaseUser.getUid())
-                                                                .getValue(UserPersonalData.class).getID(),
+                                                                .getValue(UserPersonalData.class).getId(),
                                                         dss.child(firebaseUser.getUid())
                                                                 .getValue(UserPersonalData.class).getAge()
                                                 );

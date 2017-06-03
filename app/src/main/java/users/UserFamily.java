@@ -1,10 +1,12 @@
 package users;
 
+import java.io.Serializable;
+
 /**
  * Created by ffudulu on 02-Jun-17.
  */
 
-public class UserFamily {
+public class UserFamily implements Serializable{
 
     private String email;
     private String firstName;

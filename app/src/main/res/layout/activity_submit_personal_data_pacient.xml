@@ -122,7 +122,7 @@
             android:ems="10"
             android:id="@+id/Pacient.txtCNP"
             android:background="@drawable/input_background"
-            android:hint="CNP"
+            android:hint="cnp"
             android:padding="10dp"
             android:layout_marginTop="25dp"
             android:layout_below="@+id/Pacient.lblUploadPhoto"
