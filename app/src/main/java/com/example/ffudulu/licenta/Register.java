@@ -15,9 +15,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.kosalgeek.android.caching.FileCacher;
 
 import java.io.IOException;
+
+import users.UserPersonalData;
 
 public class Register extends Activity {
 
@@ -98,6 +103,14 @@ public class Register extends Activity {
                                             goToStaffPersonalData();
                                         }
                                         if( userCacherType.readCache().contains("Pacient")) {
+                                            FirebaseUser firebaseUser =
+                                                    FirebaseAuth.getInstance().getCurrentUser();
+                                            DatabaseReference databaseRef = FirebaseDatabase.
+                                                                       getInstance().getReference();
+                                            UserPersonalData userPacient = new UserPersonalData(
+                                                    firebaseUser.getUid(),firebaseUser.getEmail()
+                                            );
+                                            savePersonalData(firebaseUser, userPacient, databaseRef);
                                             goToPacientPersonalData();
                                         }
                                         if( userCacherType.readCache().contains("Family")) {
@@ -138,13 +151,19 @@ public class Register extends Activity {
     }
 
     private void goToPacientPersonalData(){
-        Intent mSubmitPacient = new Intent(Register.this, SubmitPersonalDataPacient.class);
+        Intent mSubmitPacient = new Intent(Register.this, LogIn.class);
         startActivity(mSubmitPacient);
     }
 
     private void goToFamilyPersonalData(){
         Intent mSubmitFamily = new Intent(Register.this, SubmitPersonalDataFamily.class);
         startActivity(mSubmitFamily);
+    }
+
+    private void savePersonalData(FirebaseUser firebaseUser, UserPersonalData userPacient,
+                                                                    DatabaseReference databaseRef){
+        databaseRef.child("Users").child("Pacient").child(firebaseUser.getUid())
+                .setValue(userPacient);
     }
 
 }

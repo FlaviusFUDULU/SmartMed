@@ -9,14 +9,14 @@
     >
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/PacientAccount.appbar"
+        android:id="@+id/Pacients.appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         >
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/PacientAccount.collapsing"
+            android:id="@+id/main.collapsing"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             app:expandedTitleMarginStart="48dp"
@@ -25,7 +25,7 @@
             >
 
             <ImageView
-                android:id="@+id/PacientAccount.profile_backdrop"
+                android:id="@+id/Pacients.profile_backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -35,7 +35,7 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/PacientAccount.toolbar"
+            android:id="@+id/Pacients.toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
@@ -44,7 +44,7 @@
             />
 
         <LinearLayout
-            android:id="@+id/PacientAccount.title_container"
+            android:id="@+id/Pacients.title_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -53,56 +53,26 @@
             >
 
             <TextView
+                android:id="@+id/Pacients.title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                android:text="Title"
-                android:id="@+id/PacientAccount.full_name"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
-                android:text="text"
-                android:textColor="@android:color/white"
-                android:id="@+id/PacientAccount.email"
-                />
+                android:text="Pacienti"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="left"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
 
         </LinearLayout>
 
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/fragment_page_pacient"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecycleAllPacients"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    </android.support.v7.widget.RecyclerView>
 
-    <ImageView
-        android:id="@+id/PacientAccount.profile_image"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@mipmap/user_avatar"
-        app:layout_anchor="@id/PacientAccount.title_container"
-        android:elevation="8dp"
-        app:border_width="2dp"
-        app:border_color="#FFF"
-        app:layout_scrollFlags="scroll"
-        app:layout_anchorGravity="top|center_horizontal"
-
-        />
-    <ImageView
-        android:id="@+id/PacientAccount.profile_image_small"
-        android:layout_width="96dp"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_anchor="@id/PacientAccount.title_container"
-        android:elevation="8dp"
-        app:border_width="2dp"
-        app:border_color="#FFF"
-        app:layout_anchorGravity="left|center"
-
-        />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -49,50 +49,53 @@
             android:layout_below="@+id/txtFirstName"
             android:layout_alignParentStart="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Functia:"
-            android:id="@+id/lblViewPersonalType"
+
+        <ImageView
+            android:id="@+id/space0"
+            style="@style/AppTheme"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
             android:layout_below="@+id/txtLastName"
+            android:visibility="visible"
             android:layout_marginTop="25dp"
-            android:layout_alignParentStart="true"
-            android:textColor="#ffffff"/>
+            android:background="@drawable/btn_background"/>
 
-        <Spinner
-            android:layout_width="wrap_content"
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spinnerFunction"
-            android:layout_marginTop="5dp"
-            android:spinnerMode="dropdown"
-            style="@android:style/Widget.Spinner.DropDown"
-            android:padding="2dp"
-            android:layout_below="@+id/lblViewPersonalType"
+            android:ems="10"
+            android:id="@+id/txtCNP"
+            android:background="@drawable/input_background"
+            android:hint="CNP"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/space0"
             android:layout_alignParentStart="true" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:id="@+id/txtHospitalName"
+            android:id="@+id/txtID"
             android:background="@drawable/input_background"
-            android:hint="Nume spital"
+            android:hint="Serie buletin"
             android:padding="10dp"
             android:layout_marginTop="25dp"
-            android:layout_below="@+id/spinnerFunction"
+            android:layout_below="@+id/txtCNP"
             android:layout_alignParentStart="true" />
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:id="@+id/txtSectia"
+            android:id="@+id/txtAdresa"
             android:background="@drawable/input_background"
-            android:hint="Sectia"
+            android:hint="Adresa"
             android:padding="10dp"
             android:layout_marginTop="25dp"
-            android:layout_below="@+id/txtHospitalName"
+            android:layout_below="@+id/txtID"
             android:layout_alignParentStart="true" />
+
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -102,20 +105,10 @@
             android:src="@mipmap/ic_launcher"
             android:layout_marginTop="25dp"
             android:layout_marginLeft="15dp"
-            android:layout_below="@+id/txtSectia"
-            android:layout_above="@+id/btnSaveChanges"
-            android:layout_alignParentStart="true"
-            android:layout_alignEnd="@+id/lblViewPersonalType"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Salveaza"
-            android:id="@+id/btnSaveChanges"
-            android:textColor="@color/common_google_signin_btn_text_light"
-            android:background="@drawable/btn_background"
-            android:layout_below="@+id/imageButtonUpload"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="15dp" />
+            android:layout_below="@+id/txtAdresa"
+            android:layout_above="@+id/editTextDate"
+            android:layout_alignParentStart="true" />
+
 
         <ImageButton
             android:layout_width="40dp"
@@ -123,7 +116,7 @@
             android:id="@+id/imageButtonPhoto"
             android:background="@mipmap/camera"
             android:layout_toRightOf="@+id/ProfilePicture"
-            android:layout_below="@+id/txtSectia"
+            android:layout_below="@+id/txtAdresa"
             android:layout_marginTop="17dp"
             android:layout_marginStart="20dp" />
 
@@ -159,6 +152,99 @@
             android:layout_marginStart="5dp"
             android:textColor="#ffffff"/>
 
+        <ImageView
+            android:id="@+id/space"
+            style="@style/AppTheme"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/txtPhone"
+            android:visibility="visible"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/btn_background"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Functia:"
+            android:id="@+id/lblViewPersonalType"
+            android:layout_below="@+id/space"
+            android:layout_marginTop="25dp"
+            android:layout_alignParentStart="true"
+            android:textColor="#ffffff"/>
+
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerFunction"
+            android:layout_marginTop="5dp"
+            android:spinnerMode="dropdown"
+            style="@android:style/Widget.Material.Light.Spinner.Underlined"
+            android:padding="2dp"
+            android:layout_below="@+id/lblViewPersonalType"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/txtHospitalName"
+            android:background="@drawable/input_background"
+            android:hint="Nume spital"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/spinnerFunction"
+            android:layout_alignParentStart="true" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/txtSectia"
+            android:background="@drawable/input_background"
+            android:hint="Sectia"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/txtHospitalName"
+            android:layout_alignParentStart="true" />
+
+
+        <EditText
+            android:id="@+id/editTextDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="date"
+            android:layout_below="@+id/lblUploadPhoto"
+            android:background="@drawable/input_background"
+            android:hint="Data Nasterii"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:focusableInTouchMode="false"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/txtPhone"
+            android:background="@drawable/input_background"
+            android:hint="Număr telefon"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/editTextDate"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Salveaza"
+            android:id="@+id/btnSaveChanges"
+            android:textColor="@color/common_google_signin_btn_text_light"
+            android:background="@drawable/btn_background"
+            android:layout_below="@+id/txtSectia"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp" />
+
         <ProgressBar
             android:id="@+id/progressBarUpload"
             style="?android:attr/progressBarStyleLarge"
@@ -174,6 +260,8 @@
             android:layout_marginTop="15dp"
             >
         </ProgressBar>
+
+
 
     </RelativeLayout>
 </ScrollView>

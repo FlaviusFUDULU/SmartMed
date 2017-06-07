@@ -6,7 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:datePickerStyle">@style/MyDatePickerStyle</item>
+    </style>
 
+    <style name="MyDatePickerStyle" parent="@android:style/Widget.DeviceDefault.CalendarView">
+        <item name="android:headerBackground">#656565</item>
     </style>
 
     <style name="CardAccount" parent="CardView.Dark">

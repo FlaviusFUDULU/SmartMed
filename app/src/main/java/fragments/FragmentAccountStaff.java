@@ -103,11 +103,54 @@ public class FragmentAccountStaff extends Fragment
             e.printStackTrace();
         }
 
+        TextView mCNP = (TextView) view.findViewById(R.id.cardView_text_CNP);
+        try {
+            mCNP.setText(userCacher.readCache().getCnp());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TextView mId = (TextView) view.findViewById(R.id.cardView_text_ID);
+        try {
+            mId.setText(userCacher.readCache().getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TextView mAddress = (TextView) view.findViewById(R.id.cardView_text_address);
+        try {
+            mAddress.setText(userCacher.readCache().getAddress());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TextView mDateOfBirth = (TextView) view.findViewById(R.id.cardView_text_dateOfBirth);
+        try {
+            mDateOfBirth.setText(userCacher.readCache().getDateOfBirth().toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TextView mRank = (TextView) view.findViewById(R.id.cardView_text_Rank);
+        try {
+            mRank.setText(userCacher.readCache().getRank());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TextView mPhone = (TextView) view.findViewById(R.id.cardView_text_phoneNumber);
+        try {
+            mPhone.setText(userCacher.readCache().getPhoneNumber());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
         File directory = cw.getDir("SmartMedProfile", Context.MODE_PRIVATE);
         File myProfilePic = new File(directory, firebaseUser.getUid());
         mProfileImage = (ImageView) view.findViewById(R.id.materialup_profile_image);
-        Picasso.with(getActivity()).load(myProfilePic)
+        Picasso.with(getActivity()).load(firebaseUser.getPhotoUrl())
                 .transform(new CircleTransform()).noFade()
 //                .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
                 .into(mProfileImage);
@@ -139,7 +182,7 @@ public class FragmentAccountStaff extends Fragment
             ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
             File directory = cw.getDir("SmartMedProfile", Context.MODE_PRIVATE);
             File myProfilePicSmall = new File(directory, firebaseUser.getUid());
-            Picasso.with(getActivity()).load(myProfilePicSmall)
+            Picasso.with(getActivity()).load(firebaseUser.getPhotoUrl())
                     .transform(new CircleTransform()).noFade()
 //                 .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
                     .into(mProfileImageSmall);

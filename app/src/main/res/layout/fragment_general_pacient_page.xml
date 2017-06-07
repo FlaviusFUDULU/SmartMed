@@ -9,14 +9,14 @@
     >
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/PacientAccount.appbar"
+        android:id="@+id/PacientAccountGeneral.appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         >
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/PacientAccount.collapsing"
+            android:id="@+id/PacientAccountGeneral.collapsing"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             app:expandedTitleMarginStart="48dp"
@@ -25,7 +25,7 @@
             >
 
             <ImageView
-                android:id="@+id/PacientAccount.profile_backdrop"
+                android:id="@+id/PacientAccountGeneral.profile_backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -35,7 +35,7 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/PacientAccount.toolbar"
+            android:id="@+id/PacientAccountGeneral.toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
@@ -44,7 +44,7 @@
             />
 
         <LinearLayout
-            android:id="@+id/PacientAccount.title_container"
+            android:id="@+id/PacientAccountGeneral.title_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:text="Title"
-                android:id="@+id/PacientAccount.full_name"
+                android:id="@+id/PacientAccountGeneral.full_name"
                 />
 
             <TextView
@@ -68,7 +68,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
                 android:text="text"
                 android:textColor="@android:color/white"
-                android:id="@+id/PacientAccount.email"
+                android:id="@+id/PacientAccountGeneral.email"
                 />
 
         </LinearLayout>
@@ -76,16 +76,24 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/fragment_page_pacient"/>
+    <include layout="@layout/fragment_general_pacient"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/PacientAccountGeneral.viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
+
 
 
     <ImageView
-        android:id="@+id/PacientAccount.profile_image"
+        android:id="@+id/PacientAccountGeneral.profile_image"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_gravity="center_horizontal"
         android:src="@mipmap/user_avatar"
-        app:layout_anchor="@id/PacientAccount.title_container"
+        app:layout_anchor="@id/PacientAccountGeneral.title_container"
         android:elevation="8dp"
         app:border_width="2dp"
         app:border_color="#FFF"
@@ -94,10 +102,10 @@
 
         />
     <ImageView
-        android:id="@+id/PacientAccount.profile_image_small"
+        android:id="@+id/PacientAccountGeneral.profile_image_small"
         android:layout_width="96dp"
         android:layout_height="?attr/actionBarSize"
-        app:layout_anchor="@id/PacientAccount.title_container"
+        app:layout_anchor="@id/PacientAccountGeneral.title_container"
         android:elevation="8dp"
         app:border_width="2dp"
         app:border_color="#FFF"

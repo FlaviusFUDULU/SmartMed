@@ -1,6 +1,7 @@
 package com.example.ffudulu.licenta;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -32,6 +34,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import users.UserMedic;
 
 public class SubmitPersonalData extends Activity {
@@ -44,6 +50,17 @@ public class SubmitPersonalData extends Activity {
     private EditText mLastName;
     private EditText mHospitalName;
     private EditText mSectionName;
+    private EditText mDateofBirth;
+    private EditText mCNP;
+    private EditText mID;
+    private EditText mAddress;
+    private EditText mPhoneNumber;
+
+    private String phoneNumber;
+    private String dateBirth;
+    private String cnp;
+    private String id;
+    private String address;
     private Button mBtnSave;
     private String firstName;
     private String lastName;
@@ -56,6 +73,9 @@ public class SubmitPersonalData extends Activity {
     private ImageView mImgProfilePic;
     private ProgressBar mProgressBarUpload;
     private Uri photoUrl;
+
+    private Calendar myCalendar;
+    private DatePickerDialog.OnDateSetListener date;
 
     private DatabaseReference databaseRef;
 
@@ -90,6 +110,12 @@ public class SubmitPersonalData extends Activity {
         mHospitalName = (EditText) findViewById(R.id.txtHospitalName);
         mSectionName = (EditText) findViewById(R.id.txtSectia);
 
+        mDateofBirth = (EditText) findViewById(R.id.editTextDate);
+        mPhoneNumber = (EditText) findViewById(R.id.txtPhone);
+        mCNP = (EditText) findViewById(R.id.txtCNP);
+        mID = (EditText) findViewById(R.id.txtID);
+        mAddress = (EditText) findViewById(R.id.txtAdresa);
+
         //Spinner
         mPersonalTypeSpinner = (Spinner) findViewById(R.id.spinnerFunction);
         adapterPersonalType = new ArrayAdapter<String>(this,
@@ -107,6 +133,32 @@ public class SubmitPersonalData extends Activity {
 
         //The rest
 
+        myCalendar = Calendar.getInstance();
+
+        date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                myCalendar.set(Calendar.YEAR, i);
+                myCalendar.set(Calendar.MONTH, i1);
+                myCalendar.set(Calendar.DAY_OF_MONTH, i2);
+                updateLabel();
+            }
+
+
+        };
+
+        mDateofBirth.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(SubmitPersonalData.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
 
         mBtnSave = (Button) findViewById(R.id.btnSaveChanges);
 
@@ -119,6 +171,11 @@ public class SubmitPersonalData extends Activity {
                 hospitalName = mHospitalName.getText().toString().trim();
                 sectionName = mSectionName.getText().toString().trim();
                 rank = mPersonalTypeSpinner.getSelectedItem().toString().trim();
+                cnp = mCNP.getText().toString().trim();
+                id = mID.getText().toString().trim();
+                address = mAddress.getText().toString().trim();
+                dateBirth = mDateofBirth.getText().toString().trim();
+                phoneNumber = mPhoneNumber.getText().toString().trim();
 
                 if (!TextUtils.isEmpty(firstName) || !TextUtils.isEmpty(lastName) ||
                         !TextUtils.isEmpty(hospitalName) || !TextUtils.isEmpty(sectionName)
@@ -132,9 +189,11 @@ public class SubmitPersonalData extends Activity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        UserMedic userMedic = new UserMedic(firebaseUser.getEmail(),
+                                        UserMedic userMedic = new UserMedic(
+                                                firebaseUser.getUid(), firebaseUser.getEmail(),
                                                 firstName, hospitalName, lastName,
-                                                rank, sectionName);
+                                                rank, sectionName, cnp, id, address, phoneNumber,
+                                                dateBirth);
 
                                         savePersonalData(firebaseUser, userMedic);
 
@@ -264,5 +323,13 @@ public class SubmitPersonalData extends Activity {
 
     private void savePersonalData(FirebaseUser firebaseUser, UserMedic userMedic){
         databaseRef.child("Users").child(userMedic.getRank()).child(firebaseUser.getUid()).setValue(userMedic);
+    }
+
+    private void updateLabel() {
+
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        mDateofBirth.setText(sdf.format(myCalendar.getTime()));
     }
 }

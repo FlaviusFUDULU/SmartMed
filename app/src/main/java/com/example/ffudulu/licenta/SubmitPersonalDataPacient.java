@@ -20,13 +20,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -34,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import fragments.MainDrawer;
 import users.UserPersonalData;
 
 public class SubmitPersonalDataPacient extends Activity {
@@ -43,7 +41,20 @@ public class SubmitPersonalDataPacient extends Activity {
     private EditText mpacientCNP;
     private EditText mPacientID;
     private EditText mPacientAge;
+    private EditText mUID;
+    private EditText mAddress;
+    private EditText mPhoneNumber;
+    private EditText mAssuranceNumber;
+    private EditText mEmail;
+    private EditText mDateofAdmittance;
 
+    private String dateOfAdmittande = null;
+    private String gender = null;
+    private String email = null;
+    private String uID = null;
+    private String address = null;
+    private String phoneNumber = null;
+    private String assuranceNumber = null;
     private String pacientFirstName = null;
     private String pacientLastName = null;
     private String pacientCNP = null;
@@ -60,7 +71,7 @@ public class SubmitPersonalDataPacient extends Activity {
 
     private Button mPacientSaveData;
 
-    private String[] personalType = {"TBA" , "TBA"};
+    private String[] personalType = {"Masculin" , "Feminin"};
     private ArrayAdapter<String> adapterPersonalType;
     private Spinner mPersonalTypeSpinner;
 
@@ -131,6 +142,13 @@ public class SubmitPersonalDataPacient extends Activity {
             }
         });
 
+        mUID = (EditText) findViewById(R.id.Pacient_uID);
+        mAddress = (EditText) findViewById(R.id.Pacient_txtAddress);
+        mPhoneNumber = (EditText) findViewById(R.id.Pacient_txtPhoneNumber);
+        mAssuranceNumber = (EditText) findViewById(R.id.Pacient_txtAssunrance);
+        mEmail = (EditText) findViewById(R.id.Pacient_email);
+        mDateofAdmittance = (EditText) findViewById(R.id.Pacient_txtDatainternarii);
+
         mPacientSaveData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,36 +157,44 @@ public class SubmitPersonalDataPacient extends Activity {
                 pacientCNP = mpacientCNP.getText().toString().trim();
                 pacientID = mPacientID.getText().toString().trim();
                 pacientAge =  mPacientAge.getText().toString().trim();
+                uID = mUID.getText().toString().trim();
+                address = mAddress.getText().toString().trim();
+                phoneNumber = mPhoneNumber.getText().toString().trim();
+                assuranceNumber = mAssuranceNumber.getText().toString().trim();
+                email = mEmail.getText().toString().trim();
+                gender = mPersonalTypeSpinner.getSelectedItem().toString().trim();
+                dateOfAdmittande = mDateofAdmittance.getText().toString().trim();
 
                 if(!TextUtils.isEmpty(pacientFirstName) || !TextUtils.isEmpty(pacientLastName) ||
                         !TextUtils.isEmpty(pacientCNP) || !TextUtils.isEmpty(pacientID) ||
                         !TextUtils.isEmpty(pacientAge)){
-                    UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(pacientFirstName + " " + pacientLastName).setPhotoUri(photoUrl)
-                            .build();
-                    firebaseUser.updateProfile(profileUpdate)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        UserPersonalData userPacient = new UserPersonalData(
-                                                pacientFirstName,pacientLastName,
-                                                firebaseUser.getEmail(), pacientCNP, pacientID,
-                                                pacientAge
-                                        );
+//                    UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+//                            .setDisplayName(pacientFirstName + " " + pacientLastName).setPhotoUri(photoUrl)
+//                            .build();
+//                    firebaseUser.updateProfile(profileUpdate)
+//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if (task.isSuccessful()) {
+//                                        UserPersonalData userPacient = new UserPersonalData(
+//
+//                                        );
+                    UserPersonalData userPacient = new UserPersonalData(uID,pacientFirstName,
+                            pacientLastName, email, pacientCNP, pacientID, pacientAge,
+                            photoUrl.toString(), address, phoneNumber, assuranceNumber,
+                            dateOfAdmittande, gender);
 
+                    savePersonalData(uID, userPacient);
 
-                                        savePersonalData(firebaseUser, userPacient);
-
-                                        Toast.makeText(SubmitPersonalDataPacient.this,
-                                                "înregistrare reușită!",
-                                                Toast.LENGTH_SHORT).show();
-                                        enableAll();
-                                    }
-                                    Intent mInitialize = new Intent(SubmitPersonalDataPacient.this, Initialization.class);
-                                    startActivity(mInitialize);
-                                }
-                            });
+                    Toast.makeText(SubmitPersonalDataPacient.this,
+                            "Internare reușită!",
+                            Toast.LENGTH_SHORT).show();
+                    enableAll();
+//                                    }
+                    Intent mInitialize = new Intent(SubmitPersonalDataPacient.this, MainDrawer.class);
+                    startActivity(mInitialize);
+//                                }
+//                            });
                 }
                 else{
                     Toast.makeText(SubmitPersonalDataPacient.this, "Toate câmpurile sunt necesare!",
@@ -272,8 +298,8 @@ public class SubmitPersonalDataPacient extends Activity {
         mPacientSaveData.setEnabled(false);
     }
 
-    private void savePersonalData(FirebaseUser firebaseUser, UserPersonalData userPacient){
-        databaseRef.child("Users").child("Pacient").child(firebaseUser.getUid())
+    private void savePersonalData(String uId, UserPersonalData userPacient){
+        databaseRef.child("Users").child("Pacient").child(uId)
                 .setValue(userPacient);
     }
 }

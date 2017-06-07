@@ -12,7 +12,7 @@
         android:paddingTop="24dp">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewUid"
+            android:id="@+id/PacientGeneral.cardViewUid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -34,7 +34,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_uid"
+                    android:id="@+id/PacientGeneral.cardView.text_uid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"
@@ -45,7 +45,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewNume"
+            android:id="@+id/PacientGeneral.cardViewNume"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -67,7 +67,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_nume"
+                    android:id="@+id/PacientGeneral.cardView.text_nume"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"
@@ -78,7 +78,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewGender"
+            android:id="@+id/PacientGeneral.cardViewGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -100,7 +100,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_gender"
+                    android:id="@+id/PacientGeneral.cardView.text_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"
@@ -111,7 +111,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewEmail"
+            android:id="@+id/PacientGeneral.cardViewEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -133,7 +133,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_email"
+                    android:id="@+id/PacientGeneral.cardView.text_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"
@@ -144,7 +144,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewSpital"
+            android:id="@+id/PacientGeneral.cardViewSpital"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -166,7 +166,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_spital"
+                    android:id="@+id/PacientGeneral.cardView.text_spital"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"
@@ -178,7 +178,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewCNP"
+            android:id="@+id/PacientGeneral.cardViewCNP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -200,7 +200,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_CNP"
+                    android:id="@+id/PacientGeneral.cardView.text_CNP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"
@@ -211,7 +211,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewID"
+            android:id="@+id/PacientGeneral.cardViewID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -233,7 +233,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_ID"
+                    android:id="@+id/PacientGeneral.cardView.text_ID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"
@@ -244,7 +244,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewAge"
+            android:id="@+id/PacientGeneral.cardViewAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -266,7 +266,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_age"
+                    android:id="@+id/PacientGeneral.cardView.text_age"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"
@@ -277,7 +277,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewAddress"
+            android:id="@+id/PacientGeneral.cardViewAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -299,7 +299,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_address"
+                    android:id="@+id/PacientGeneral.cardView.text_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"
@@ -310,7 +310,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewPhoneNumber"
+            android:id="@+id/PacientGeneral.cardViewPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -332,7 +332,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_phoneNumber"
+                    android:id="@+id/PacientGeneral.cardView.text_phoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"
@@ -343,7 +343,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/Pacient.cardViewAssuranceCode"
+            android:id="@+id/PacientGeneral.cardViewAssuranceCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -365,7 +365,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
-                    android:id="@+id/Pacient.cardView.text_assuranceCode"
+                    android:id="@+id/PacientGeneral.cardView.text_assuranceCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="70dp"

@@ -13,6 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.kosalgeek.android.caching.FileCacher;
+
+import java.io.IOException;
 
 import repository.SignIn;
 
@@ -26,6 +30,7 @@ public class LogIn extends Activity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private final FileCacher<String> userCacherType = new FileCacher<>(LogIn.this, "type");
 
 
 
@@ -43,15 +48,33 @@ public class LogIn extends Activity {
 
         mEmailField = (EditText) findViewById(R.id.txtUsername);
         mPasswordField = (EditText) findViewById(R.id.txtPassword);
+        mProgressBarLogin = (ProgressBar) findViewById( R.id.progressBarLogIn);
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() != null){
+                if (firebaseAuth.getCurrentUser() != null) {
 //                    Toast.makeText(LogIn.this, "You are allready logged in",
 //                            Toast.LENGTH_LONG).show();
-                    Intent mInitialization = new Intent(LogIn.this, Initialization.class);
-                    startActivity(mInitialization);
+                    try {
+                        if (userCacherType.readCache().contains("Pacient")) {
+
+                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                            if (firebaseUser.getPhotoUrl() == null) {
+                                Toast.makeText(LogIn.this, "Nu s-a facut inca internarea inca!",
+                                        Toast.LENGTH_LONG).show();
+                                mProgressBarLogin.setVisibility(View.GONE);
+                                FirebaseAuth.getInstance().signOut();
+                                enableAll();
+                            } else {
+                                Intent mInitialization = new Intent(LogIn.this, Initialization.class);
+                                startActivity(mInitialization);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
@@ -98,7 +121,7 @@ public class LogIn extends Activity {
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
 
-        mProgressBarLogin = (ProgressBar) findViewById( R.id.progressBarLogIn);
+
         mProgressBarLogin.setVisibility( View.VISIBLE);
         disableAll();
 

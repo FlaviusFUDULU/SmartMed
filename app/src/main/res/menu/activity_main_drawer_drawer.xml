@@ -7,13 +7,13 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Contul meu" />
         <item
-            android:id="@+id/nav_test"
+            android:id="@+id/nav_see_all_pacients"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="TestLayout" />
+            android:title="Lista Pacienti" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_new_pacient"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="Internare nouă" />
 
     </group>
 

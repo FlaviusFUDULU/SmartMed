@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,12 +17,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kosalgeek.android.caching.FileCacher;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
 import fragments.MainDrawer;
-import transformations.SaveImage;
 import users.UserFamily;
 import users.UserMedic;
 import users.UserPersonalData;
@@ -73,9 +72,9 @@ public class Initialization extends Activity {
                     firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     databaseRef = FirebaseDatabase.getInstance().getReference();
 
-                    Picasso.with(Initialization.this).load(firebaseUser.getPhotoUrl())
-                            .into(new SaveImage().picassoImageTarget(getApplicationContext()
-                                    , "SmartMedProfile", firebaseUser.getUid()));
+//                    Picasso.with(Initialization.this).load(firebaseUser.getPhotoUrl())
+//                            .into(new SaveImage().picassoImageTarget(getApplicationContext()
+//                                    , "SmartMedProfile", firebaseUser.getUid()));
                     databaseRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -85,6 +84,8 @@ public class Initialization extends Activity {
                                         try {
                                             if (userCacherType.readCache().contains("Staff")) {
                                                 userMedic = new UserMedic(
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserMedic.class).getuId(),
                                                         dss.child(firebaseUser.getUid())
                                                                 .getValue(UserMedic.class).getEmail(),
                                                         dss.child(firebaseUser.getUid())
@@ -96,7 +97,17 @@ public class Initialization extends Activity {
                                                         dss.child(firebaseUser.getUid())
                                                                 .getValue(UserMedic.class).getRank(),
                                                         dss.child(firebaseUser.getUid())
-                                                                .getValue(UserMedic.class).getSectionName()
+                                                                .getValue(UserMedic.class).getSectionName(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserMedic.class).getCnp(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserMedic.class).getId(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserMedic.class).getAddress(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserMedic.class).getPhoneNumber(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserMedic.class).getDateOfBirth()
                                                 );
                                                 cacheData();
                                                 mProgressBarLogin.setVisibility(View.GONE);
@@ -105,25 +116,91 @@ public class Initialization extends Activity {
                                                 break;
                                             } else if (userCacherType.readCache().contains("Pacient")) {
 
-                                                userPacient = new UserPersonalData(
-                                                        dss.child(firebaseUser.getUid())
-                                                                .getValue(UserPersonalData.class).getFirstName(),
-                                                        dss.child(firebaseUser.getUid())
-                                                                .getValue(UserPersonalData.class).getLastName(),
-                                                        dss.child(firebaseUser.getUid())
-                                                                .getValue(UserPersonalData.class).getEmail(),
-                                                        dss.child(firebaseUser.getUid())
-                                                                .getValue(UserPersonalData.class).getCnp(),
-                                                        dss.child(firebaseUser.getUid())
-                                                                .getValue(UserPersonalData.class).getId(),
-                                                        dss.child(firebaseUser.getUid())
-                                                                .getValue(UserPersonalData.class).getAge()
-                                                );
-                                                cacheData();
-                                                Intent mDrawer = new Intent(Initialization.this, MainDrawer.class);
-                                                mProgressBarLogin.setVisibility(View.GONE);
-                                                startActivity(mDrawer);
-                                                break;
+                                                if(dss.child(firebaseUser.getUid())
+                                                        .getValue(UserPersonalData.class).getPhotoUrl() == null){
+                                                    Toast.makeText(Initialization.this, "Nu s-a facut inca internarea inca!",
+                                                            Toast.LENGTH_LONG).show();
+                                                    Intent mLogIn = new Intent(Initialization.this, LogIn.class);
+                                                    mProgressBarLogin.setVisibility(View.GONE);
+                                                    startActivity(mLogIn);
+
+                                                }else if(dss.child(firebaseUser.getUid())
+                                                        .getValue(UserPersonalData.class).getDiagnostic() == null){
+
+                                                    userPacient = new UserPersonalData(
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getuId(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getFirstName(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getLastName(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getEmail(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getCnp(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getId(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getAge(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getPhotoUrl(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getAddress(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getPhoneNumber(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getAssuranceCode(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getDateOfAddmitance(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getSex()
+                                                    );
+                                                    cacheData();
+                                                    Intent mDrawer = new Intent(Initialization.this, MainDrawer.class);
+                                                    mProgressBarLogin.setVisibility(View.GONE);
+                                                    startActivity(mDrawer);
+                                                    break;
+                                                } else if(dss.child(firebaseUser.getUid())
+                                                        .getValue(UserPersonalData.class).getDiagnostic() != null) {
+
+                                                    userPacient = new UserPersonalData(
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getuId(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getFirstName(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getLastName(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getEmail(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getCnp(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getId(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getAge(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getPhotoUrl(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getAddress(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getPhoneNumber(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getAssuranceCode(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getDateOfAddmitance(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getDiagnostic(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getTreatment(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getSex()
+                                                    );
+                                                    cacheData();
+                                                    Intent mDrawer = new Intent(Initialization.this, MainDrawer.class);
+                                                    mProgressBarLogin.setVisibility(View.GONE);
+                                                    startActivity(mDrawer);
+                                                    break;
+                                                }
                                             } else if (userCacherType.readCache().contains("Family")) {
                                                 userFamily = new UserFamily(
                                                         dss.child(firebaseUser.getUid())
@@ -146,25 +223,26 @@ public class Initialization extends Activity {
                                             Intent mModeSelect = new Intent(Initialization.this, ModeSelect.class);
                                             startActivity(mModeSelect);
                                         }
-                                    } else {
-                                        try {
-                                            if (userCacherType.readCache().contains("Staff")) {
-                                                Intent mPersonalData = new Intent(Initialization.this, SubmitPersonalData.class);
-                                                mProgressBarLogin.setVisibility(View.GONE);
-                                                startActivity(mPersonalData);
-                                            } else if (userCacherType.readCache().contains("Pacient")) {
-                                                Intent mSubmitPacient = new Intent(Initialization.this, SubmitPersonalDataPacient.class);
-                                                mProgressBarLogin.setVisibility(View.GONE);
-                                                startActivity(mSubmitPacient);
-                                            } else if (userCacherType.readCache().contains("Family")) {
-                                                Intent mSubmitFamily = new Intent(Initialization.this, SubmitPersonalDataFamily.class);
-                                                mProgressBarLogin.setVisibility(View.GONE);
-                                                startActivity(mSubmitFamily);
-                                            }
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
                                     }
+//                                    else {
+//                                        try {
+//                                            if (userCacherType.readCache().contains("Staff")) {
+//                                                Intent mPersonalData = new Intent(Initialization.this, SubmitPersonalData.class);
+//                                                mProgressBarLogin.setVisibility(View.GONE);
+//                                                startActivity(mPersonalData);
+//                                            } else if (userCacherType.readCache().contains("Pacient")) {
+//                                                Intent mSubmitPacient = new Intent(Initialization.this, SubmitPersonalDataPacient.class);
+//                                                mProgressBarLogin.setVisibility(View.GONE);
+//                                                startActivity(mSubmitPacient);
+//                                            } else if (userCacherType.readCache().contains("Family")) {
+//                                                Intent mSubmitFamily = new Intent(Initialization.this, SubmitPersonalDataFamily.class);
+//                                                mProgressBarLogin.setVisibility(View.GONE);
+//                                                startActivity(mSubmitFamily);
+//                                            }
+//                                        } catch (IOException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
                                 }
                             }
                         }
