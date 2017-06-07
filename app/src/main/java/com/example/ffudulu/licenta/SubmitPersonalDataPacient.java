@@ -47,7 +47,9 @@ public class SubmitPersonalDataPacient extends Activity {
     private EditText mAssuranceNumber;
     private EditText mEmail;
     private EditText mDateofAdmittance;
+    private EditText mRoom;
 
+    private String room = null;
     private String dateOfAdmittande = null;
     private String gender = null;
     private String email = null;
@@ -148,6 +150,7 @@ public class SubmitPersonalDataPacient extends Activity {
         mAssuranceNumber = (EditText) findViewById(R.id.Pacient_txtAssunrance);
         mEmail = (EditText) findViewById(R.id.Pacient_email);
         mDateofAdmittance = (EditText) findViewById(R.id.Pacient_txtDatainternarii);
+        mRoom = (EditText) findViewById(R.id.Pacient_txtSalon);
 
         mPacientSaveData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +167,7 @@ public class SubmitPersonalDataPacient extends Activity {
                 email = mEmail.getText().toString().trim();
                 gender = mPersonalTypeSpinner.getSelectedItem().toString().trim();
                 dateOfAdmittande = mDateofAdmittance.getText().toString().trim();
+                room = mRoom.getText().toString().trim();
 
                 if(!TextUtils.isEmpty(pacientFirstName) || !TextUtils.isEmpty(pacientLastName) ||
                         !TextUtils.isEmpty(pacientCNP) || !TextUtils.isEmpty(pacientID) ||
@@ -182,7 +186,7 @@ public class SubmitPersonalDataPacient extends Activity {
                     UserPersonalData userPacient = new UserPersonalData(uID,pacientFirstName,
                             pacientLastName, email, pacientCNP, pacientID, pacientAge,
                             photoUrl.toString(), address, phoneNumber, assuranceNumber,
-                            dateOfAdmittande, gender);
+                            dateOfAdmittande, gender, room);
 
                     savePersonalData(uID, userPacient);
 

@@ -85,7 +85,8 @@ public class FragmentPacients extends Fragment {
 
                         //viewHolder.setPicture(model.getPhotoUrl().toString());
                         viewHolder.setName(model.getFirstName()+" "+model.getLastName());
-                        viewHolder.setSalon("merge!");
+                        viewHolder.setSalon(model.getRoom());
+                        viewHolder.setPicture(model.getPhotoUrl());
 
                         viewHolder.mSeeProfile.setOnClickListener(new View.OnClickListener() {
                             @Override

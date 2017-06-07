@@ -153,7 +153,9 @@ public class Initialization extends Activity {
                                                             dss.child(firebaseUser.getUid())
                                                                     .getValue(UserPersonalData.class).getDateOfAddmitance(),
                                                             dss.child(firebaseUser.getUid())
-                                                                    .getValue(UserPersonalData.class).getSex()
+                                                                    .getValue(UserPersonalData.class).getSex(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getRoom()
                                                     );
                                                     cacheData();
                                                     Intent mDrawer = new Intent(Initialization.this, MainDrawer.class);
@@ -193,7 +195,11 @@ public class Initialization extends Activity {
                                                             dss.child(firebaseUser.getUid())
                                                                     .getValue(UserPersonalData.class).getTreatment(),
                                                             dss.child(firebaseUser.getUid())
-                                                                    .getValue(UserPersonalData.class).getSex()
+                                                                    .getValue(UserPersonalData.class).getSex(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getRoom(),
+                                                            dss.child(firebaseUser.getUid())
+                                                                    .getValue(UserPersonalData.class).getAnalisys()
                                                     );
                                                     cacheData();
                                                     Intent mDrawer = new Intent(Initialization.this, MainDrawer.class);

@@ -18,7 +18,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/PacientAccount.collapsing"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="130dp"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp"
             app:layout_scrollFlags="scroll|snap"
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/account_background"
+                android:src="@mipmap/account_background_pacient"
                 app:layout_collapseMode="parallax"
                 />
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -38,7 +38,7 @@
             android:id="@+id/PacientAccount.toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
+            android:minHeight="30dp"
             app:theme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             />

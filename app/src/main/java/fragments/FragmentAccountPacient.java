@@ -126,7 +126,7 @@ public class FragmentAccountPacient extends Fragment
             e.printStackTrace();
         }
 
-        TextView mId = (TextView) view.findViewById(R.id.Pacient_cardView_text_uid);
+        TextView mId = (TextView) view.findViewById(R.id.Pacient_cardView_text_ID);
         try {
             mId.setText(userCacherPacient.readCache().getId());
         } catch (IOException e) {
@@ -147,6 +147,12 @@ public class FragmentAccountPacient extends Fragment
         TextView mAssuranceCode = (TextView) view.findViewById(R.id.Pacient_cardView_text_assuranceCode);
         try {
             mAssuranceCode.setText(userCacherPacient.readCache().getAssuranceCode());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        TextView mRoom = (TextView) view.findViewById(R.id.PacientGeneral_cardView_text_room);
+        try {
+            mRoom.setText(userCacherPacient.readCache().getRoom());
         } catch (IOException e) {
             e.printStackTrace();
         }

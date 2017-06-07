@@ -19,7 +19,9 @@ public class UserPersonalData implements Serializable {
     private String address;
     private String phoneNumber;
     private String assuranceCode;
+    private String room;
 
+    private Vector<String> analisys;
     private String dateOfAddmitance;
     private String diagnostic;
     private Vector<String> treatment;
@@ -27,7 +29,7 @@ public class UserPersonalData implements Serializable {
     public UserPersonalData(String uId, String firstName, String lastName, String email, String cnp,
                             String id, String age, String photoUrl, String address,
                             String phoneNumber, String assuranceCode, String dateOfAddmitance,
-                            String sex) {
+                            String sex, String room) {
         this.uId = uId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,12 +43,14 @@ public class UserPersonalData implements Serializable {
         this.assuranceCode = assuranceCode;
         this.dateOfAddmitance = dateOfAddmitance;
         this.sex = sex;
+        this.room = room;
     }
 
     public UserPersonalData(String uId, String firstName, String lastName, String email, String cnp,
                             String id, String age, String photoUrl, String address,
                             String phoneNumber, String assuranceCode, String dateOfAddmitance,
-                            String diagnostic, Vector<String> treatment, String sex) {
+                            String diagnostic, Vector<String> treatment, String sex, String room,
+                            Vector<String> analisys) {
         this.uId = uId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,10 +66,27 @@ public class UserPersonalData implements Serializable {
         this.diagnostic = diagnostic;
         this.treatment = treatment;
         this.sex = sex;
+        this.room = room;
+        this.analisys = analisys;
     }
+
+
+    public UserPersonalData(String uId, String email) {
+        this.uId = uId;
+        this.email = email;
+    }
+
 
     public UserPersonalData() {
 
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public Vector<String> getAnalisys() {
+        return analisys;
     }
 
     public String getSex() {
@@ -94,11 +115,6 @@ public class UserPersonalData implements Serializable {
 
     public Vector<String> getTreatment() {
         return treatment;
-    }
-
-    public UserPersonalData(String uId, String email) {
-        this.uId = uId;
-        this.email = email;
     }
 
     public String getPhotoUrl() {

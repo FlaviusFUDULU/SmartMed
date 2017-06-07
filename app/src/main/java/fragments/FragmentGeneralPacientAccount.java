@@ -128,7 +128,7 @@ public class FragmentGeneralPacientAccount extends Fragment
             e.printStackTrace();
         }
 
-        TextView mId = (TextView) view.findViewById(R.id.PacientGeneral_cardView_text_uid);
+        TextView mId = (TextView) view.findViewById(R.id.PacientGeneral_cardView_text_ID);
         try {
             mId.setText(userCacherPacient.readCache().getId());
         } catch (IOException e) {

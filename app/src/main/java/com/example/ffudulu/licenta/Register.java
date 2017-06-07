@@ -3,6 +3,7 @@ package com.example.ffudulu.licenta;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -111,7 +112,7 @@ public class Register extends Activity {
                                                     firebaseUser.getUid(),firebaseUser.getEmail()
                                             );
                                             savePersonalData(firebaseUser, userPacient, databaseRef);
-                                            goToPacientPersonalData();
+
                                         }
                                         if( userCacherType.readCache().contains("Family")) {
                                             goToFamilyPersonalData();
@@ -163,7 +164,12 @@ public class Register extends Activity {
     private void savePersonalData(FirebaseUser firebaseUser, UserPersonalData userPacient,
                                                                     DatabaseReference databaseRef){
         databaseRef.child("Users").child("Pacient").child(firebaseUser.getUid())
-                .setValue(userPacient);
+                .setValue(userPacient).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                goToPacientPersonalData();
+            }
+        });
     }
 
 }

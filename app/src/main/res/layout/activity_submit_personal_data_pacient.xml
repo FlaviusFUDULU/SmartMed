@@ -95,7 +95,7 @@
             android:id="@+id/Pacient.btnSaveChanges"
             android:textColor="@color/common_google_signin_btn_text_light"
             android:background="@drawable/btn_background"
-            android:layout_below="@+id/Pacient.txtDatainternarii"
+            android:layout_below="@+id/Pacient.txtSalon"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="15dp" />
 
@@ -234,6 +234,17 @@
             android:padding="10dp"
             android:layout_marginTop="25dp"
             android:layout_below="@+id/Pacient.txtAssunrance"
+            android:layout_alignParentStart="true" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/Pacient.txtSalon"
+            android:background="@drawable/input_background"
+            android:hint="Salon"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/Pacient.txtDatainternarii"
             android:layout_alignParentStart="true" />
 
         <ProgressBar
