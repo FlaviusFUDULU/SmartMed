@@ -112,8 +112,18 @@ public class FragmentPacients extends Fragment {
                         viewHolder.mSeeMedicalRecord.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent mGotoT = new Intent(getActivity(), SubmitPersonalDataPacient.class);
-                                startActivity(mGotoT);
+                                try {
+                                    userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                    userPacientUidCacher.writeCache(model.getuId().toString());
+                                    userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
+                                    userPacientCacher.writeCache(model);
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                Intent mSubmitData = new Intent(getActivity(), SubmitPersonalDataPacient.class);
+                                startActivity(mSubmitData);
+
                             }
                         });
                     }

@@ -3,16 +3,24 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@mipmap/icon_home"
+            android:title="Pagina Principală" />
+        <item
             android:id="@+id/nav_personal_data"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@mipmap/ic_profile"
             android:title="Contul meu" />
         <item
             android:id="@+id/nav_see_all_pacients"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@mipmap/ic_pacients"
             android:title="Lista Pacienti" />
         <item
+            android:id="@+id/nav_see_rooms"
+            android:icon="@mipmap/ic_rooms"
+            android:title="Saloane" />
+        <item
             android:id="@+id/nav_new_pacient"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@mipmap/ic_internare"
             android:title="Internare nouă" />
 
     </group>

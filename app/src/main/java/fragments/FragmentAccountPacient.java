@@ -150,7 +150,7 @@ public class FragmentAccountPacient extends Fragment
         } catch (IOException e) {
             e.printStackTrace();
         }
-        TextView mRoom = (TextView) view.findViewById(R.id.PacientGeneral_cardView_text_room);
+        TextView mRoom = (TextView) view.findViewById(R.id.Pacient_cardView_text_room);
         try {
             mRoom.setText(userCacherPacient.readCache().getRoom());
         } catch (IOException e) {

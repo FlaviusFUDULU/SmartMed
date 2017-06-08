@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -12,13 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.kosalgeek.android.caching.FileCacher;
 
 import java.io.IOException;
-
-import repository.SignIn;
 
 public class LogIn extends Activity {
 
@@ -60,17 +61,17 @@ public class LogIn extends Activity {
                     try {
                         if (userCacherType.readCache().contains("Pacient")) {
 
-                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                            if (firebaseUser.getPhotoUrl() == null) {
-                                Toast.makeText(LogIn.this, "Nu s-a facut inca internarea inca!",
-                                        Toast.LENGTH_LONG).show();
-                                mProgressBarLogin.setVisibility(View.GONE);
-                                FirebaseAuth.getInstance().signOut();
-                                enableAll();
-                            } else {
+//                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//                            if (firebaseUser.getPhotoUrl() == null) {
+//                                Toast.makeText(LogIn.this, "Nu s-a facut inca internarea inca!",
+//                                        Toast.LENGTH_LONG).show();
+//                                mProgressBarLogin.setVisibility(View.GONE);
+//                                FirebaseAuth.getInstance().signOut();
+//                                enableAll();
+//                            } else {
                                 Intent mInitialization = new Intent(LogIn.this, Initialization.class);
                                 startActivity(mInitialization);
-                            }
+//                            }
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -125,30 +126,57 @@ public class LogIn extends Activity {
         mProgressBarLogin.setVisibility( View.VISIBLE);
         disableAll();
 
-        SignIn signedIn = new SignIn(mAuth, email, password);
-        if (signedIn.signIntoAccount() == 0){
+        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             mProgressBarLogin.setVisibility(View.GONE);
             Toast.makeText(LogIn.this, "One or both field is empty", Toast.LENGTH_LONG).show();
             enableAll();
+
         }
-        if (signedIn.signIntoAccount() == -1){
-            mProgressBarLogin.setVisibility(View.GONE);
-            Toast.makeText(LogIn.this, "Username or password incorrect!", Toast.LENGTH_LONG).show();
-            enableAll();
+        else{
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                mProgressBarLogin.setVisibility(View.GONE);
+                                Toast.makeText(LogIn.this, "Username or password incorrect!", Toast.LENGTH_LONG).show();
+                                enableAll();
+                            }
+                            else{
+                                enableAll();
+                                mProgressBarLogin.setVisibility(View.GONE);
+                                Intent mInitialize = new Intent(LogIn.this, Initialization.class);
+                                startActivity(mInitialize);
+                            }
+                        }
+                    });
         }
-        if (signedIn.signIntoAccount() == 2){
-            //cacheData();
-            enableAll();
-            mProgressBarLogin.setVisibility(View.GONE);
-            Intent mInitialize = new Intent(LogIn.this, Initialization.class);
-            startActivity(mInitialize);
-        }
-        mEmailField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                mEmailField.setHint("");
-            }
-        });
+//        return status;
+//        SignIn signedIn = new SignIn(mAuth, email, password);
+//        if (signedIn.signIntoAccount() == 0){
+//            mProgressBarLogin.setVisibility(View.GONE);
+//            Toast.makeText(LogIn.this, "One or both field is empty", Toast.LENGTH_LONG).show();
+//            enableAll();
+//        }
+//        if (signedIn.signIntoAccount() == -1){
+//            mProgressBarLogin.setVisibility(View.GONE);
+//            Toast.makeText(LogIn.this, "Username or password incorrect!", Toast.LENGTH_LONG).show();
+//            enableAll();
+//        }
+//        if (signedIn.signIntoAccount() == 2){
+//            //cacheData();
+//            enableAll();
+//            mProgressBarLogin.setVisibility(View.GONE);
+//            Intent mInitialize = new Intent(LogIn.this, Initialization.class);
+//            startActivity(mInitialize);
+//        }
+
+            mEmailField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    mEmailField.setHint("");
+                }
+            });
     }
 
     private void goToRegister(){

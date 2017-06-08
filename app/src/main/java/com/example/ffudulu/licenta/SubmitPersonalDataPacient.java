@@ -29,7 +29,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.kosalgeek.android.caching.FileCacher;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 import fragments.MainDrawer;
 import users.UserPersonalData;
@@ -93,6 +96,9 @@ public class SubmitPersonalDataPacient extends Activity {
 
     private StorageReference mStorage;
 
+    private FileCacher<UserPersonalData> userCacherPacient;
+    private FileCacher<String> userPacientUidCacher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +158,18 @@ public class SubmitPersonalDataPacient extends Activity {
         mDateofAdmittance = (EditText) findViewById(R.id.Pacient_txtDatainternarii);
         mRoom = (EditText) findViewById(R.id.Pacient_txtSalon);
 
+        userPacientUidCacher = new FileCacher<>(SubmitPersonalDataPacient.this, "UID");
+        try {
+            userCacherPacient = new FileCacher<>(SubmitPersonalDataPacient.this,
+                                                                userPacientUidCacher.readCache());
+            mUID.setText(userCacherPacient.readCache().getuId());
+            mEmail.setText(userCacherPacient.readCache().getEmail());
+            mUID.setEnabled(false);
+            mEmail.setEnabled(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         mPacientSaveData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,6 +212,11 @@ public class SubmitPersonalDataPacient extends Activity {
                             "Internare reușită!",
                             Toast.LENGTH_SHORT).show();
                     enableAll();
+                    try {
+                        userPacientUidCacher.clearCache();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 //                                    }
                     Intent mInitialize = new Intent(SubmitPersonalDataPacient.this, MainDrawer.class);
                     startActivity(mInitialize);

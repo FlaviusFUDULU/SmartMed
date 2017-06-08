@@ -87,11 +87,13 @@ public class MainDrawer extends AppCompatActivity
         Menu menu = navigationView.getMenu();
         MenuItem seeAllPacients = menu.findItem(R.id.nav_see_all_pacients);
         MenuItem newPacient = menu.findItem(R.id.nav_new_pacient);
+        MenuItem rooms = menu.findItem(R.id.nav_see_rooms);
         try {
             if(userCacherType.readCache().contains("Pacient") ||
                     userCacherType.readCache().contains("Family")){
                 seeAllPacients.setVisible(false);
                 newPacient.setVisible(false);
+                rooms.setVisible(false);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -237,8 +239,16 @@ public class MainDrawer extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if(id == R.id.nav_home) {
+            //Intent mDrawer = new Intent(this,MainDrawer.class);
+            finish();
+//            MainDrawer fragMain = new MainDrawer();
+//            android.support.v4.app.FragmentTransaction fragmentTransaction =
+//                    getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(this, fragMain);
+//            fragmentTransaction.commit();
 
-        if (id == R.id.nav_personal_data) {
+        } else if (id == R.id.nav_personal_data) {
 
             try {
                 if(userCacherType.readCache().contains("Staff")){
@@ -273,6 +283,12 @@ public class MainDrawer extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_fl_content, fragmentTest);
             fragmentTransaction.commit();
+        } else if (id == R.id.nav_see_rooms) {
+            FragmentRooms fragmentRooms = new FragmentRooms();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_fl_content, fragmentRooms);
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_new_pacient) {
             Intent mPData = new Intent(MainDrawer.this, SubmitPersonalDataPacient.class);
             startActivity(mPData);
@@ -281,7 +297,6 @@ public class MainDrawer extends AppCompatActivity
             FirebaseAuth.getInstance().signOut();
             Intent mInitialize = new Intent(MainDrawer.this, Initialization.class);
             startActivity(mInitialize);
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
