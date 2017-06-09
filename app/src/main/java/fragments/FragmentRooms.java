@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.kosalgeek.android.caching.FileCacher;
 
 import java.io.IOException;
+import java.util.Vector;
 
 import users.UserMedic;
 import users.UserPersonalData;
@@ -46,6 +47,7 @@ public class FragmentRooms extends Fragment {
     private FileCacher<String> userPacientUidCacher;
     private final FileCacher<String> userCacherType = new FileCacher<>(getActivity(), "type");
     private FileCacher<String> roomCacher;
+    private Vector<String> allRooms = new Vector<>();
 
 
     @Override
@@ -85,25 +87,33 @@ public class FragmentRooms extends Fragment {
                 @Override
                 protected void populateViewHolder(PersonalDataHolder viewHolder, final UserPersonalData model, int position) {
 
-                    viewHolder.setSalon(model.getRoom());
-                    viewHolder.mCardViewSalon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            try {
-                                roomCacher = new FileCacher<>(getActivity(), "room");
-                                roomCacher.writeCache(model.getRoom().toString());
-                                FragmentRoomsPacients fragmentRoomPacients =
-                                        new FragmentRoomsPacients();
-                                android.support.v4.app.FragmentTransaction fragmentTransaction =
-                                        getFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.main_fl_content, fragmentRoomPacients);
-                                fragmentTransaction.commit();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                    if (model.getRoom() != null) {
+                        if (allRooms.contains(model.getRoom())) {
+                            viewHolder.mCardViewSalon.setVisibility(View.GONE);
+                        } else {
+                            allRooms.add(model.getRoom());
+                            viewHolder.setSalon(model.getRoom());
+                            viewHolder.mCardViewSalon.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    try {
+                                        roomCacher = new FileCacher<>(getActivity(), "room");
+                                        roomCacher.writeCache(model.getRoom().toString());
+                                        FragmentRoomsPacients fragmentRoomPacients =
+                                                new FragmentRoomsPacients();
+                                        android.support.v4.app.FragmentTransaction fragmentTransaction =
+                                                getFragmentManager().beginTransaction();
+                                        fragmentTransaction.replace(R.id.main_fl_content, fragmentRoomPacients);
+                                        fragmentTransaction.commit();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
                         }
-                    });
-
+                    } else {
+                        viewHolder.mCardViewSalon.setVisibility(View.GONE);
+                    }
                 }
             };
 

@@ -35,7 +35,8 @@
         </activity>
         <activity android:name=".ModeSelect" />
         <activity android:name=".SubmitPersonalDataPacient" />
-        <activity android:name=".SubmitPersonalDataFamily"></activity>
+        <activity android:name=".SubmitPersonalDataFamily" />
+        <activity android:name=".NewInternare"></activity>
     </application>
 
 </manifest>

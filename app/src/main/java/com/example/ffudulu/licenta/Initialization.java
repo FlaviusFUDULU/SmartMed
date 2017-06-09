@@ -122,6 +122,7 @@ public class Initialization extends Activity {
                                                             Toast.LENGTH_LONG).show();
                                                     Intent mLogIn = new Intent(Initialization.this, LogIn.class);
                                                     mProgressBarLogin.setVisibility(View.GONE);
+                                                    FirebaseAuth.getInstance().signOut();
                                                     startActivity(mLogIn);
 
                                                 }else if(dss.child(firebaseUser.getUid())

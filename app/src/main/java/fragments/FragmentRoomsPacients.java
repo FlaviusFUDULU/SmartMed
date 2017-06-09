@@ -93,40 +93,44 @@ public class FragmentRoomsPacients extends Fragment {
                     protected void populateViewHolder(PersonalDataHolder viewHolder, final UserPersonalData model, int position) {
                         try {
                             roomCacher = new FileCacher<>(getActivity(), "room");
-                            if (roomCacher.readCache().contains(model.getRoom())) {
-                                //viewHolder.setPicture(model.getPhotoUrl().toString());
-                                viewHolder.setName(model.getFirstName() + " " + model.getLastName());
-                                viewHolder.setSalon(model.getRoom());
-                                viewHolder.setPicture(model.getPhotoUrl());
+                            if(model.getRoom()!=null) {
+                                if (roomCacher.readCache().contains(model.getRoom())) {
+                                    //viewHolder.setPicture(model.getPhotoUrl().toString());
+                                    viewHolder.setName(model.getFirstName() + " " + model.getLastName());
+                                    viewHolder.setSalon(model.getRoom());
+                                    viewHolder.setPicture(model.getPhotoUrl());
 
-                                viewHolder.mSeeProfile.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        try {
-                                            userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
-                                            userPacientUidCacher.writeCache(model.getuId().toString());
-                                            userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
-                                            userPacientCacher.writeCache(model);
+                                    viewHolder.mSeeProfile.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            try {
+                                                userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                                userPacientUidCacher.writeCache(model.getuId().toString());
+                                                userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
+                                                userPacientCacher.writeCache(model);
 
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            FragmentGeneralPacientAccount fragmentAccountPacientAccount =
+                                                    new FragmentGeneralPacientAccount();
+                                            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                                                    getFragmentManager().beginTransaction();
+                                            fragmentTransaction.replace(R.id.main_fl_content, fragmentAccountPacientAccount);
+                                            fragmentTransaction.commit();
                                         }
-                                        FragmentGeneralPacientAccount fragmentAccountPacientAccount =
-                                                new FragmentGeneralPacientAccount();
-                                        android.support.v4.app.FragmentTransaction fragmentTransaction =
-                                                getFragmentManager().beginTransaction();
-                                        fragmentTransaction.replace(R.id.main_fl_content, fragmentAccountPacientAccount);
-                                        fragmentTransaction.commit();
-                                    }
-                                });
+                                    });
 
-                                viewHolder.mSeeMedicalRecord.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent mGotoT = new Intent(getActivity(), SubmitPersonalDataPacient.class);
-                                        startActivity(mGotoT);
-                                    }
-                                });
+                                    viewHolder.mSeeMedicalRecord.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Intent mGotoT = new Intent(getActivity(), SubmitPersonalDataPacient.class);
+                                            startActivity(mGotoT);
+                                        }
+                                    });
+                                } else {
+                                    viewHolder.mCardViewPacient.setVisibility(View.GONE);
+                                }
                             } else {
                                 viewHolder.mCardViewPacient.setVisibility(View.GONE);
                             }

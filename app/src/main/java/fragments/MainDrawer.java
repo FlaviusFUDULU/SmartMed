@@ -47,6 +47,7 @@ public class MainDrawer extends AppCompatActivity
     private FileCacher<users.UserMedic> userCacher;
     private FileCacher<users.UserPersonalData> userPacientCacher;
     private FileCacher<users.UserFamily> userFamilyCacher;
+    private FileCacher<String> roomCacher;
 
     ///???
     NavigationView navigationView = null;
@@ -66,7 +67,7 @@ public class MainDrawer extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-
+        roomCacher = new FileCacher<>(MainDrawer.this, "room");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,6 +291,11 @@ public class MainDrawer extends AppCompatActivity
             fragmentTransaction.replace(R.id.main_fl_content, fragmentRooms);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_new_pacient) {
+            try {
+                roomCacher.clearCache();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Intent mPData = new Intent(MainDrawer.this, SubmitPersonalDataPacient.class);
             startActivity(mPData);
 
