@@ -13,13 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ffudulu.licenta.NewInternare;
 import com.example.ffudulu.licenta.R;
-import com.example.ffudulu.licenta.SubmitPersonalDataPacient;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kosalgeek.android.caching.FileCacher;
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +39,7 @@ public class FragmentRoomsPacients extends Fragment {
 
     private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mRef;
+    private DatabaseReference mRef2;
 
     private ImageView mProfileImage;
     private ImageView mProfileImageSmall;
@@ -48,6 +52,7 @@ public class FragmentRoomsPacients extends Fragment {
     private FileCacher<String> userPacientUidCacher;
     private final FileCacher<String> userCacherType = new FileCacher<>(getActivity(), "type");
     private FileCacher<String> roomCacher;
+    private FileCacher<String> actionCacher;
 
 
     @Override
@@ -59,6 +64,7 @@ public class FragmentRoomsPacients extends Fragment {
         toolbar.setVisibility(View.GONE);
 
         mRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Pacient");
+        mRef2 = FirebaseDatabase.getInstance().getReference();
 
         userCacher = new FileCacher<>(getActivity(), firebaseUser.getUid());
 
@@ -90,57 +96,124 @@ public class FragmentRoomsPacients extends Fragment {
 
                 ) {
                     @Override
-                    protected void populateViewHolder(PersonalDataHolder viewHolder, final UserPersonalData model, int position) {
-                        try {
-                            roomCacher = new FileCacher<>(getActivity(), "room");
-                            if(model.getRoom()!=null) {
-                                if (roomCacher.readCache().contains(model.getRoom())) {
-                                    //viewHolder.setPicture(model.getPhotoUrl().toString());
-                                    viewHolder.setName(model.getFirstName() + " " + model.getLastName());
-                                    viewHolder.setSalon(model.getRoom());
-                                    viewHolder.setPicture(model.getPhotoUrl());
+                    protected void populateViewHolder(final PersonalDataHolder viewHolder, final UserPersonalData model, int position) {
+                        roomCacher = new FileCacher<>(getActivity(), "room");
 
-                                    viewHolder.mSeeProfile.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            try {
-                                                userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
-                                                userPacientUidCacher.writeCache(model.getuId().toString());
-                                                userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
-                                                userPacientCacher.writeCache(model);
+                        if (model.getRoom() == null) {
+                            viewHolder.mCardViewPacient.setVisibility(View.GONE);
+                        } else try {
+                            if(roomCacher.readCache().contains(model.getRoom().toString())){
+                                //if(mRef.child("Tratamente").child(userPacientUidCacher.readCache()).getKey()!=null){
+                                mRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.child("Tratamente")
+                                                .hasChild(model.getuId())) {
+                                            viewHolder.mSeeMedicalRecord.setVisibility(View.VISIBLE);
+                                            viewHolder.mSeeProfile.setVisibility(View.VISIBLE);
+                                            viewHolder.mInternare.setVisibility(View.GONE);
+                                            viewHolder.mFirstTreatment.setVisibility(View.GONE);
+                                            //viewHolder.setPicture(model.getPhotoUrl().toString());
+                                            viewHolder.setName(model.getFirstName() + " " + model.getLastName());
+                                            viewHolder.setSalon(model.getRoom());
+                                            viewHolder.setPicture(model.getPhotoUrl());
 
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                            FragmentGeneralPacientAccount fragmentAccountPacientAccount =
-                                                    new FragmentGeneralPacientAccount();
-                                            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                                                    getFragmentManager().beginTransaction();
-                                            fragmentTransaction.replace(R.id.main_fl_content, fragmentAccountPacientAccount);
-                                            fragmentTransaction.commit();
+                                            viewHolder.mSeeProfile.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    try {
+                                                        userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                                        userPacientUidCacher.writeCache(model.getuId().toString());
+                                                        userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
+                                                        userPacientCacher.writeCache(model);
+
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    FragmentGeneralPacientAccount fragmentAccountPacientAccount =
+                                                            new FragmentGeneralPacientAccount();
+                                                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                                                            getFragmentManager().beginTransaction();
+                                                    fragmentTransaction.replace(R.id.main_fl_content, fragmentAccountPacientAccount);
+                                                    fragmentTransaction.commit();
+                                                }
+                                            });
+
+                                            viewHolder.mSeeMedicalRecord.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    try {
+                                                        userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                                        userPacientUidCacher.writeCache(model.getuId().toString());
+                                                        userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
+                                                        userPacientCacher.writeCache(model);
+
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    FragmentTreatmentPacient fragmentTratament =
+                                                            new FragmentTreatmentPacient();
+                                                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                                                            getFragmentManager().beginTransaction();
+                                                    fragmentTransaction.replace(R.id.main_fl_content, fragmentTratament);
+                                                    fragmentTransaction.commit();
+
+                                                }
+                                            });
+                                        } else {
+                                            viewHolder.mSeeMedicalRecord.setVisibility(View.GONE);
+                                            viewHolder.mSeeProfile.setVisibility(View.GONE);
+                                            viewHolder.mInternare.setVisibility(View.GONE);
+                                            viewHolder.mFirstTreatment.setVisibility(View.VISIBLE);
+
+                                            viewHolder.setName(model.getFirstName() + " " + model.getLastName());
+                                            viewHolder.setSalon(model.getRoom());
+                                            viewHolder.setPicture(model.getPhotoUrl());
+
+                                            viewHolder.mFirstTreatment.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    try {
+                                                        userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                                        userPacientUidCacher.writeCache(model.getuId().toString());
+                                                        userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
+                                                        userPacientCacher.writeCache(model);
+
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    actionCacher = new FileCacher<>(getActivity(), "action");
+                                                    try {
+                                                        actionCacher.writeCache("InitialTreatment");
+                                                        Intent mSubmitData = new Intent(getActivity(), NewInternare.class);
+                                                        startActivity(mSubmitData);
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                }
+                                            });
                                         }
-                                    });
+                                    }
 
-                                    viewHolder.mSeeMedicalRecord.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            Intent mGotoT = new Intent(getActivity(), SubmitPersonalDataPacient.class);
-                                            startActivity(mGotoT);
-                                        }
-                                    });
-                                } else {
-                                    viewHolder.mCardViewPacient.setVisibility(View.GONE);
-                                }
-                            } else {
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                            }else {
                                 viewHolder.mCardViewPacient.setVisibility(View.GONE);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                     }
                 };
 
         mRecyclerViewALlPacients.setAdapter(firebaseRecyclerAdapter);
+
     }
 
     public static class PersonalDataHolder extends RecyclerView.ViewHolder{
@@ -151,6 +224,8 @@ public class FragmentRoomsPacients extends Fragment {
         ImageView mSeeProfile;
         ImageView mSeeMedicalRecord;
         CardView mCardViewPacient;
+        ImageView mInternare;
+        ImageView mFirstTreatment;
 
 
         public PersonalDataHolder(View itemView) {
@@ -161,7 +236,8 @@ public class FragmentRoomsPacients extends Fragment {
             mSeeProfile = (ImageView) mView.findViewById(R.id.AllPacientsRoom_seeProfile);
             mSeeMedicalRecord = (ImageView) mView.findViewById(R.id.AllPacientsRoom_seeMedicalRecord);
             mCardViewPacient = (CardView) mView.findViewById(R.id.cardViewNume);
-
+            mInternare = (ImageView) mView.findViewById(R.id.AllPacientsRoom_makeInternare);
+            mFirstTreatment = (ImageView) mView.findViewById(R.id.AllPacientsRoom_firstTreatment);
 
         }
 

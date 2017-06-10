@@ -101,9 +101,33 @@
         app:layout_anchorGravity="left|center"
 
         />
+    <ImageView
+        android:id="@+id/PacientTreatment.profile_release"
+        android:layout_width="60dp"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_anchor="@id/PacientTreatment.title_container"
+        android:elevation="8dp"
+        app:border_width="2dp"
+        app:border_color="#FFF"
+        app:layout_anchorGravity="right|center"
+        android:src="@mipmap/sign_out_icon"
+
+    />
+    <ImageView
+        android:id="@+id/PacientTreatment.profile_new_treatment"
+        android:layout_width="60dp"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_anchor="@id/PacientTreatment.profile_release"
+        android:elevation="8dp"
+        app:border_width="2dp"
+        app:border_color="#FFF"
+        android:layout_marginRight="60dp"
+        app:layout_anchorGravity="left|center"
+        android:src="@mipmap/ic_receipt_white_24dp"
+        />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/RecycleAllPacients"
+        android:id="@+id/RecycleTreatment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">

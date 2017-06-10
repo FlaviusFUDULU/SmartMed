@@ -49,6 +49,7 @@ public class NewInternare extends AppCompatActivity {
 
     private FileCacher<String> userPacientUidCacher;
     private FileCacher<UserPersonalData> userPacientCacher;
+    private FileCacher<String> actionCacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,19 +67,20 @@ public class NewInternare extends AppCompatActivity {
         mDateOfRelease = (EditText) findViewById(R.id.PacientInt_dataexternarii);
         mSave = (Button) findViewById(R.id.PacientInt_btnSaveChanges);
         mProgressBar = (ProgressBar) findViewById(R.id.PacientInt_progressBarUpload);
+        actionCacher = new FileCacher<>(NewInternare.this, "action");
 
-        userPacientUidCacher = new FileCacher<>(NewInternare.this, "UID");
         try {
-            userPacientCacher = new FileCacher<>(NewInternare.this,
-                    userPacientUidCacher.readCache());
-            mUid.setText(userPacientCacher.readCache().getuId());
-            mUid.setEnabled(false);
-            mFirstName.setText(userPacientCacher.readCache().getFirstName());
-            mFirstName.setEnabled(false);
-            mlastName.setText(userPacientCacher.readCache().getLastName());
-            mlastName.setEnabled(false);
-            mDateOfAdmittance.setText(userPacientCacher.readCache().getDateOfAddmitance());
-            mDateOfAdmittance.setEnabled(false);
+            if(actionCacher.readCache().contains("Release")){
+                completePersonal();
+                completeTreatment();
+            }else if(actionCacher.readCache().contains("NewTreatment")){
+                completePersonal();
+                mDateOfRelease.setText("Data externarii");
+                mDateOfRelease.setEnabled(false);
+            } else if (actionCacher.readCache().contains("InitialTreatment")){
+                completePersonal();
+                mDateOfRelease.setEnabled(false);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -158,5 +160,37 @@ public class NewInternare extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void completePersonal(){
+        userPacientUidCacher = new FileCacher<>(NewInternare.this, "UID");
+        try {
+            userPacientCacher = new FileCacher<>(NewInternare.this,
+                    userPacientUidCacher.readCache());
+            mUid.setText(userPacientCacher.readCache().getuId());
+            mUid.setEnabled(false);
+            mFirstName.setText(userPacientCacher.readCache().getFirstName());
+            mFirstName.setEnabled(false);
+            mlastName.setText(userPacientCacher.readCache().getLastName());
+            mlastName.setEnabled(false);
+            mDateOfAdmittance.setText(userPacientCacher.readCache().getDateOfAddmitance());
+            mDateOfAdmittance.setEnabled(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void completeTreatment(){
+        mDiagnostic.setEnabled(false);
+        mMedication.setEnabled(false);
+        mDateOfMedication.setEnabled(false);
+        mDetails.setEnabled(false);
+
+        mDiagnostic.setText("Vezi fisa pacient");
+        mMedication.setText("Vezi fisa pacient");
+        mDateOfMedication.setText("Vezi fisa pacient");
+        mDetails.setText("Vezi fisa pacient");
+    }
+
+
 
 }

@@ -50,7 +50,7 @@ public class FragmentPacients extends Fragment {
     private FileCacher<UserMedic> userCacher;
     private FileCacher<UserPersonalData> userPacientCacher;
     private FileCacher<String> userPacientUidCacher;
-    private final FileCacher<String> userCacherType = new FileCacher<>(getActivity(), "type");
+    private FileCacher<String> actionCacher;
 
 
     @Override
@@ -162,8 +162,12 @@ public class FragmentPacients extends Fragment {
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
                                                 }
-                                                Intent mSubmitData = new Intent(getActivity(), NewInternare.class);
-                                                startActivity(mSubmitData);
+                                                FragmentTreatmentPacient fragmentTratament =
+                                                        new FragmentTreatmentPacient();
+                                                android.support.v4.app.FragmentTransaction fragmentTransaction =
+                                                        getFragmentManager().beginTransaction();
+                                                fragmentTransaction.replace(R.id.main_fl_content, fragmentTratament);
+                                                fragmentTransaction.commit();
 
                                             }
                                         });
@@ -189,8 +193,14 @@ public class FragmentPacients extends Fragment {
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
                                                 }
-                                                Intent mSubmitData = new Intent(getActivity(), NewInternare.class);
-                                                startActivity(mSubmitData);
+                                                actionCacher = new FileCacher<>(getActivity(), "action");
+                                                try {
+                                                    actionCacher.writeCache("InitialTreatment");
+                                                    Intent mSubmitData = new Intent(getActivity(), NewInternare.class);
+                                                    startActivity(mSubmitData);
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
 
                                             }
                                         });

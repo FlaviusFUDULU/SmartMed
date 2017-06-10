@@ -22,6 +22,10 @@
             android:id="@+id/nav_new_pacient"
             android:icon="@mipmap/ic_internare"
             android:title="Internare nouă" />
+        <item
+            android:id="@+id/nav_my_treatment"
+            android:icon="@mipmap/ic_receipt_white_24dp"
+            android:title="Istoric medical" />
 
     </group>
 
