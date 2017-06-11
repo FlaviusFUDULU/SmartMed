@@ -22,7 +22,6 @@ import com.example.ffudulu.licenta.Initialization;
 import com.example.ffudulu.licenta.LogIn;
 import com.example.ffudulu.licenta.R;
 import com.example.ffudulu.licenta.SubmitPersonalData;
-import com.example.ffudulu.licenta.SubmitPersonalDataPacient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.kosalgeek.android.caching.FileCacher;
@@ -42,6 +41,7 @@ public class MainDrawer extends AppCompatActivity
     private FirebaseUser firebaseUser;
     private ImageView mAccountImageView;
 
+
     private final FileCacher<String> userCacherType = new FileCacher<>(MainDrawer.this, "type");
 
     private FileCacher<users.UserMedic> userCacher;
@@ -49,6 +49,7 @@ public class MainDrawer extends AppCompatActivity
     private FileCacher<users.UserFamily> userFamilyCacher;
     private FileCacher<String> roomCacher;
     private FileCacher<String> userPacientUidCacher;
+    private FileCacher<String> actionCacherDrawer;
 
     ///???
     NavigationView navigationView = null;
@@ -97,8 +98,7 @@ public class MainDrawer extends AppCompatActivity
                 seeAllPacients.setVisible(false);
                 newPacient.setVisible(false);
                 rooms.setVisible(false);
-            } else if (userCacherType.readCache().contains("Staff") ||
-                    userCacherType.readCache().contains("Family")){
+            } else if (userCacherType.readCache().contains("Staff")){
                 myTreatment.setVisible(false);
             }
         } catch (IOException e) {
@@ -284,12 +284,24 @@ public class MainDrawer extends AppCompatActivity
 
 
         } else if (id == R.id.nav_see_all_pacients) {
+            actionCacherDrawer = new FileCacher<>(MainDrawer.this, "drawerAction");
+            try {
+                actionCacherDrawer.writeCache("allPacients");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             FragmentPacients fragmentTest = new FragmentPacients();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_fl_content, fragmentTest);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_see_rooms) {
+            actionCacherDrawer = new FileCacher<>(MainDrawer.this, "drawerAction");
+            try {
+                actionCacherDrawer.writeCache("seeRooms");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             FragmentRooms fragmentRooms = new FragmentRooms();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
@@ -297,30 +309,51 @@ public class MainDrawer extends AppCompatActivity
             fragmentTransaction.commit();
         } else if (id == R.id.nav_new_pacient) {
             try {
-                roomCacher.clearCache();
+                actionCacherDrawer = new FileCacher<>(MainDrawer.this, "drawerAction");
+                actionCacherDrawer.writeCache("faraInternare");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Intent mPData = new Intent(MainDrawer.this, SubmitPersonalDataPacient.class);
-            startActivity(mPData);
+            FragmentPacients fragmentTest = new FragmentPacients();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_fl_content, fragmentTest);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_sign_out) {
             FirebaseAuth.getInstance().signOut();
             Intent mInitialize = new Intent(MainDrawer.this, Initialization.class);
             startActivity(mInitialize);
-        } else if (id == R.id.nav_my_treatment){
-            try {
-                userPacientUidCacher = new FileCacher<>(MainDrawer.this, "UID");
-                userPacientUidCacher.writeCache(firebaseUser.getUid());
+        } else if (id == R.id.nav_my_treatment) {
 
+            try {
+                if (userCacherType.readCache().contains("Pacient")) {
+                    try {
+                        userPacientUidCacher = new FileCacher<>(MainDrawer.this, "UID");
+                        userPacientUidCacher.writeCache(firebaseUser.getUid());
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    FragmentTreatmentPacient fragmentTreatment = new FragmentTreatmentPacient();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_fl_content, fragmentTreatment);
+                    fragmentTransaction.commit();
+                } else if(userCacherType.readCache().contains("Family")){
+                    userFamilyCacher = new FileCacher<>(MainDrawer.this, firebaseUser.getUid());
+                    userPacientUidCacher = new FileCacher<>(MainDrawer.this, "UID");
+                    userPacientUidCacher.writeCache(userFamilyCacher.readCache().getPacientUID());
+                    FragmentTreatmentPacient fragmentTreatment = new FragmentTreatmentPacient();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_fl_content, fragmentTreatment);
+                    fragmentTransaction.commit();
+
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            FragmentTreatmentPacient fragmentTreatment = new FragmentTreatmentPacient();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_fl_content, fragmentTreatment);
-            fragmentTransaction.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

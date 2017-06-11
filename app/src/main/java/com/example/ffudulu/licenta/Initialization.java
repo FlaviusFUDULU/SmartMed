@@ -211,11 +211,11 @@ public class Initialization extends Activity {
                                             } else if (userCacherType.readCache().contains("Family")) {
                                                 userFamily = new UserFamily(
                                                         dss.child(firebaseUser.getUid())
-                                                                .getValue(UserFamily.class).getFirstName(),
-                                                        dss.child(firebaseUser.getUid())
-                                                                .getValue(UserFamily.class).getFirstName(),
-                                                        dss.child(firebaseUser.getUid())
                                                                 .getValue(UserFamily.class).getEmail(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserFamily.class).getFirstName(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserFamily.class).getFirstName(),
                                                         dss.child(firebaseUser.getUid())
                                                                 .getValue(UserFamily.class).getPacientUID()
                                                 );

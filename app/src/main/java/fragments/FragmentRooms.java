@@ -3,7 +3,7 @@ package fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -64,7 +64,7 @@ public class FragmentRooms extends Fragment {
 
         mRecyclerViewALlPacients = (RecyclerView) view.findViewById(R.id.RecycleAllPacients);
 //        mRecyclerViewALlPacients.setHasFixedSize(true);
-        mRecyclerViewALlPacients.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerViewALlPacients.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
 
         return view;
@@ -90,6 +90,7 @@ public class FragmentRooms extends Fragment {
                     if (model.getRoom() != null) {
                         if (allRooms.contains(model.getRoom())) {
                             viewHolder.mCardViewSalon.setVisibility(View.GONE);
+                            viewHolder.mCardViewSalon.setLayoutParams(new CardView.LayoutParams(10,10));
                         } else {
                             allRooms.add(model.getRoom());
                             viewHolder.setSalon(model.getRoom());
@@ -112,7 +113,9 @@ public class FragmentRooms extends Fragment {
                             });
                         }
                     } else {
-                        viewHolder.mCardViewSalon.setVisibility(View.GONE);
+                       viewHolder.mCardViewSalon.setVisibility(View.GONE);
+                       viewHolder.mCardViewSalon.setLayoutParams(new CardView.LayoutParams(
+                                1,1));
                     }
                 }
             };

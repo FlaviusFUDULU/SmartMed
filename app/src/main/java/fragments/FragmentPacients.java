@@ -3,6 +3,7 @@ package fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -51,6 +52,7 @@ public class FragmentPacients extends Fragment {
     private FileCacher<UserPersonalData> userPacientCacher;
     private FileCacher<String> userPacientUidCacher;
     private FileCacher<String> actionCacher;
+    private FileCacher<String> actionCacherDrawer;
 
 
     @Override
@@ -89,130 +91,165 @@ public class FragmentPacients extends Fragment {
                     @Override
                     protected void populateViewHolder(final PersonalDataHolder viewHolder, final UserPersonalData model, int position) {
 
-                        if (model.getRoom() == null) {
-                            viewHolder.mSeeMedicalRecord.setVisibility(View.GONE);
-                            viewHolder.mSeeProfile.setVisibility(View.GONE);
-                            viewHolder.mInternare.setVisibility(View.VISIBLE);
-                            viewHolder.mFirstTreatment.setVisibility(View.GONE);
-                            viewHolder.setName(model.getEmail());
-                            viewHolder.setSalon("Nu s-a făcut internare!");
+                        actionCacherDrawer = new FileCacher<>(getActivity(), "drawerAction");
+                        try {
+                            if(actionCacherDrawer.readCache().contains("faraInternare")){
+                                if (model.getRoom() == null) {
+                                    viewHolder.mSeeMedicalRecord.setVisibility(View.GONE);
+                                    viewHolder.mSeeProfile.setVisibility(View.GONE);
+                                    viewHolder.mInternare.setVisibility(View.VISIBLE);
+                                    viewHolder.mFirstTreatment.setVisibility(View.GONE);
+                                    viewHolder.setName(model.getEmail());
+                                    viewHolder.setSalon("Nu s-a făcut internare!");
 
-                            viewHolder.mInternare.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    try {
-                                        userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
-                                        userPacientUidCacher.writeCache(model.getuId().toString());
-                                        userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
-                                        userPacientCacher.writeCache(model);
+                                    viewHolder.mInternare.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            try {
+                                                userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                                userPacientUidCacher.writeCache(model.getuId().toString());
+                                                userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
+                                                userPacientCacher.writeCache(model);
 
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            Intent mSubmitData = new Intent(getActivity(), SubmitPersonalDataPacient.class);
+                                            startActivity(mSubmitData);
+                                        }
+                                    });
+                                }
+                                else {
+                                    viewHolder.mCardView.setVisibility(View.GONE);
+                                }
+                            }else if (model.getRoom() == null) {
+                                viewHolder.mSeeMedicalRecord.setVisibility(View.GONE);
+                                viewHolder.mSeeProfile.setVisibility(View.GONE);
+                                viewHolder.mInternare.setVisibility(View.VISIBLE);
+                                viewHolder.mFirstTreatment.setVisibility(View.GONE);
+                                viewHolder.setName(model.getEmail());
+                                viewHolder.setSalon("Nu s-a făcut internare!");
+                                viewHolder.mCardView.setVisibility(View.GONE);
+
+                                viewHolder.mInternare.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        try {
+                                            userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                            userPacientUidCacher.writeCache(model.getuId().toString());
+                                            userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
+                                            userPacientCacher.writeCache(model);
+
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        Intent mSubmitData = new Intent(getActivity(), SubmitPersonalDataPacient.class);
+                                        startActivity(mSubmitData);
                                     }
-                                    Intent mSubmitData = new Intent(getActivity(), SubmitPersonalDataPacient.class);
-                                    startActivity(mSubmitData);
-                                }
-                            });
-                        } else {
-                            //if(mRef.child("Tratamente").child(userPacientUidCacher.readCache()).getKey()!=null){
-                            mRef2.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.child("Tratamente")
-                                            .hasChild(model.getuId())) {
-                                        viewHolder.mSeeMedicalRecord.setVisibility(View.VISIBLE);
-                                        viewHolder.mSeeProfile.setVisibility(View.VISIBLE);
-                                        viewHolder.mInternare.setVisibility(View.GONE);
-                                        viewHolder.mFirstTreatment.setVisibility(View.GONE);
-                                        //viewHolder.setPicture(model.getPhotoUrl().toString());
-                                        viewHolder.setName(model.getFirstName() + " " + model.getLastName());
-                                        viewHolder.setSalon(model.getRoom());
-                                        viewHolder.setPicture(model.getPhotoUrl());
+                                });
+                            } else {
+                                //if(mRef.child("Tratamente").child(userPacientUidCacher.readCache()).getKey()!=null){
+                                mRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.child("Tratamente")
+                                                .hasChild(model.getuId())) {
+                                            viewHolder.mSeeMedicalRecord.setVisibility(View.VISIBLE);
+                                            viewHolder.mSeeProfile.setVisibility(View.VISIBLE);
+                                            viewHolder.mInternare.setVisibility(View.GONE);
+                                            viewHolder.mFirstTreatment.setVisibility(View.GONE);
+                                            //viewHolder.setPicture(model.getPhotoUrl().toString());
+                                            viewHolder.setName(model.getFirstName() + " " + model.getLastName());
+                                            viewHolder.setSalon(model.getRoom());
+                                            viewHolder.setPicture(model.getPhotoUrl());
 
-                                        viewHolder.mSeeProfile.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                try {
-                                                    userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
-                                                    userPacientUidCacher.writeCache(model.getuId().toString());
-                                                    userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
-                                                    userPacientCacher.writeCache(model);
+                                            viewHolder.mSeeProfile.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    try {
+                                                        userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                                        userPacientUidCacher.writeCache(model.getuId().toString());
+                                                        userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
+                                                        userPacientCacher.writeCache(model);
 
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    FragmentGeneralPacientAccount fragmentAccountPacientAccount =
+                                                            new FragmentGeneralPacientAccount();
+                                                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                                                            getFragmentManager().beginTransaction();
+                                                    fragmentTransaction.replace(R.id.main_fl_content, fragmentAccountPacientAccount);
+                                                    fragmentTransaction.commit();
                                                 }
-                                                FragmentGeneralPacientAccount fragmentAccountPacientAccount =
-                                                        new FragmentGeneralPacientAccount();
-                                                android.support.v4.app.FragmentTransaction fragmentTransaction =
-                                                        getFragmentManager().beginTransaction();
-                                                fragmentTransaction.replace(R.id.main_fl_content, fragmentAccountPacientAccount);
-                                                fragmentTransaction.commit();
-                                            }
-                                        });
+                                            });
 
-                                        viewHolder.mSeeMedicalRecord.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                try {
-                                                    userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
-                                                    userPacientUidCacher.writeCache(model.getuId().toString());
-                                                    userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
-                                                    userPacientCacher.writeCache(model);
+                                            viewHolder.mSeeMedicalRecord.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    try {
+                                                        userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                                        userPacientUidCacher.writeCache(model.getuId().toString());
+                                                        userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
+                                                        userPacientCacher.writeCache(model);
 
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    FragmentTreatmentPacient fragmentTratament =
+                                                            new FragmentTreatmentPacient();
+                                                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                                                            getFragmentManager().beginTransaction();
+                                                    fragmentTransaction.replace(R.id.main_fl_content, fragmentTratament);
+                                                    fragmentTransaction.commit();
+
                                                 }
-                                                FragmentTreatmentPacient fragmentTratament =
-                                                        new FragmentTreatmentPacient();
-                                                android.support.v4.app.FragmentTransaction fragmentTransaction =
-                                                        getFragmentManager().beginTransaction();
-                                                fragmentTransaction.replace(R.id.main_fl_content, fragmentTratament);
-                                                fragmentTransaction.commit();
+                                            });
+                                        } else {
+                                            viewHolder.mSeeMedicalRecord.setVisibility(View.GONE);
+                                            viewHolder.mSeeProfile.setVisibility(View.GONE);
+                                            viewHolder.mInternare.setVisibility(View.GONE);
+                                            viewHolder.mFirstTreatment.setVisibility(View.VISIBLE);
 
-                                            }
-                                        });
-                                    } else {
-                                        viewHolder.mSeeMedicalRecord.setVisibility(View.GONE);
-                                        viewHolder.mSeeProfile.setVisibility(View.GONE);
-                                        viewHolder.mInternare.setVisibility(View.GONE);
-                                        viewHolder.mFirstTreatment.setVisibility(View.VISIBLE);
+                                            viewHolder.setName(model.getFirstName() + " " + model.getLastName());
+                                            viewHolder.setSalon(model.getRoom());
+                                            viewHolder.setPicture(model.getPhotoUrl());
 
-                                        viewHolder.setName(model.getFirstName() + " " + model.getLastName());
-                                        viewHolder.setSalon(model.getRoom());
-                                        viewHolder.setPicture(model.getPhotoUrl());
+                                            viewHolder.mFirstTreatment.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    try {
+                                                        userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                                        userPacientUidCacher.writeCache(model.getuId().toString());
+                                                        userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
+                                                        userPacientCacher.writeCache(model);
 
-                                        viewHolder.mFirstTreatment.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                try {
-                                                    userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
-                                                    userPacientUidCacher.writeCache(model.getuId().toString());
-                                                    userPacientCacher = new FileCacher<>(getActivity(), model.getuId());
-                                                    userPacientCacher.writeCache(model);
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    actionCacher = new FileCacher<>(getActivity(), "action");
+                                                    try {
+                                                        actionCacher.writeCache("InitialTreatment");
+                                                        Intent mSubmitData = new Intent(getActivity(), NewInternare.class);
+                                                        startActivity(mSubmitData);
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
 
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
                                                 }
-                                                actionCacher = new FileCacher<>(getActivity(), "action");
-                                                try {
-                                                    actionCacher.writeCache("InitialTreatment");
-                                                    Intent mSubmitData = new Intent(getActivity(), NewInternare.class);
-                                                    startActivity(mSubmitData);
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-
-                                            }
-                                        });
+                                            });
+                                        }
                                     }
-                                }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
+                                    }
+                                });
 
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     }
                 };
@@ -229,6 +266,7 @@ public class FragmentPacients extends Fragment {
         ImageView mSeeMedicalRecord;
         ImageView mInternare;
         ImageView mFirstTreatment;
+        CardView mCardView;
 
 
         public PersonalDataHolder(View itemView) {
@@ -240,7 +278,7 @@ public class FragmentPacients extends Fragment {
             mSeeMedicalRecord = (ImageView) mView.findViewById(R.id.AllPacients_seeMedicalRecord);
             mInternare = (ImageView) mView.findViewById(R.id.AllPacients_makeInternare);
             mFirstTreatment = (ImageView) mView.findViewById(R.id.AllPacients_firstTreatment);
-
+            mCardView = (CardView) mView.findViewById(R.id.AllPacients_cardViewNume);
 
         }
 
