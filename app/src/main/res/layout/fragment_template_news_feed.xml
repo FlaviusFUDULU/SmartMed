@@ -1,0 +1,66 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+    <android.support.v7.widget.CardView
+
+        android:id="@+id/NewFeedTmp.cardViewNume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+
+        style="@style/CardAccountNewsFeed">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/NewsFeedTmp.photo"
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="3dp"/>
+                <TextView
+                    android:id="@+id/NewsFeedTmp.fullName"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/NewsFeedTmp.photo"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="25dp"
+                    android:text="Nume:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/colorPrimaryDark" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/NewsFeedTmp.message"
+                    android:text="Test"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_below="@+id/NewsFeedTmp.photo"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+                <ImageView
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:id="@+id/NewsFeedTmp.newInternare"
+                    android:layout_toEndOf="@+id/NewsFeedTmp.fullName"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@mipmap/ic_internare_white"/>
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

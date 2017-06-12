@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import com.example.ffudulu.licenta.R;
 import com.example.ffudulu.licenta.SubmitPersonalData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.kosalgeek.android.caching.FileCacher;
 import com.squareup.picasso.Picasso;
 
@@ -56,6 +58,9 @@ public class MainDrawer extends AppCompatActivity
     Toolbar toolbar = null;
     //???
 
+    private RecyclerView mRecyclerNewsFeed;
+    private DatabaseReference mRef;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -92,6 +97,7 @@ public class MainDrawer extends AppCompatActivity
         MenuItem newPacient = menu.findItem(R.id.nav_new_pacient);
         MenuItem rooms = menu.findItem(R.id.nav_see_rooms);
         MenuItem myTreatment = menu.findItem(R.id.nav_my_treatment);
+        MenuItem whoIsSeeing = menu.findItem(R.id.nav_who_is_seeing);
         try {
             if(userCacherType.readCache().contains("Pacient") ||
                     userCacherType.readCache().contains("Family")){
@@ -100,6 +106,11 @@ public class MainDrawer extends AppCompatActivity
                 rooms.setVisible(false);
             } else if (userCacherType.readCache().contains("Staff")){
                 myTreatment.setVisible(false);
+                whoIsSeeing.setVisible(false);
+            }
+            if (userCacherType.readCache().contains("Family")){
+                whoIsSeeing.setVisible(false);
+                myTreatment.setTitle("Istoric medical membru familie");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -203,9 +214,14 @@ public class MainDrawer extends AppCompatActivity
                 .into(mAccountImageView);
 
         //end
-
-
+        FragmentNewsFeed fragmentNewsFeed = new FragmentNewsFeed();
+        android.support.v4.app.FragmentTransaction fragmentTransaction =
+                getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_fl_content, fragmentNewsFeed);
+        fragmentTransaction.commit();
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -247,12 +263,13 @@ public class MainDrawer extends AppCompatActivity
 
         if(id == R.id.nav_home) {
             //Intent mDrawer = new Intent(this,MainDrawer.class);
-            finish();
+            //finish();
 //            MainDrawer fragMain = new MainDrawer();
 //            android.support.v4.app.FragmentTransaction fragmentTransaction =
 //                    getSupportFragmentManager().beginTransaction();
 //            fragmentTransaction.replace(this, fragMain);
 //            fragmentTransaction.commit();
+
 
         } else if (id == R.id.nav_personal_data) {
 
@@ -342,18 +359,33 @@ public class MainDrawer extends AppCompatActivity
                     fragmentTransaction.commit();
                 } else if(userCacherType.readCache().contains("Family")){
                     userFamilyCacher = new FileCacher<>(MainDrawer.this, firebaseUser.getUid());
-                    userPacientUidCacher = new FileCacher<>(MainDrawer.this, "UID");
-                    userPacientUidCacher.writeCache(userFamilyCacher.readCache().getPacientUID());
-                    FragmentTreatmentPacient fragmentTreatment = new FragmentTreatmentPacient();
-                    android.support.v4.app.FragmentTransaction fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.main_fl_content, fragmentTreatment);
-                    fragmentTransaction.commit();
-
+                    if(userFamilyCacher.readCache().getActivated()!=null) {
+                        if (userFamilyCacher.readCache().getActivated().contains("Yes")) {
+                            userPacientUidCacher = new FileCacher<>(MainDrawer.this, "UID");
+                            userPacientUidCacher.writeCache(userFamilyCacher.readCache().getPacientUID());
+                            FragmentTreatmentPacient fragmentTreatment = new FragmentTreatmentPacient();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                                    getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.main_fl_content, fragmentTreatment);
+                            fragmentTransaction.commit();
+                        } else {
+                            Toast.makeText(MainDrawer.this, "Nu ați primit acces de la pacient!",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(MainDrawer.this, "Nu ați primit acces de la pacient!",
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else if (id == R.id.nav_who_is_seeing){
+            FragmentWhoIsSeeing fragmentWho = new FragmentWhoIsSeeing();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_fl_content, fragmentWho);
+            fragmentTransaction.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

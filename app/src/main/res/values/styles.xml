@@ -19,6 +19,11 @@
         <item name="android:fillColor">@color/colorPrimaryDark</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
+    <style name="CardAccountNewsFeed" parent="CardView.Dark">
+        <item name="cardBackgroundColor">@color/colorAccent</item>
+        <item name="android:fillColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>

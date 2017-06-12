@@ -90,7 +90,6 @@ public class FragmentRooms extends Fragment {
                     if (model.getRoom() != null) {
                         if (allRooms.contains(model.getRoom())) {
                             viewHolder.mCardViewSalon.setVisibility(View.GONE);
-                            viewHolder.mCardViewSalon.setLayoutParams(new CardView.LayoutParams(10,10));
                         } else {
                             allRooms.add(model.getRoom());
                             viewHolder.setSalon(model.getRoom());
@@ -114,8 +113,6 @@ public class FragmentRooms extends Fragment {
                         }
                     } else {
                        viewHolder.mCardViewSalon.setVisibility(View.GONE);
-                       viewHolder.mCardViewSalon.setLayoutParams(new CardView.LayoutParams(
-                                1,1));
                     }
                 }
             };

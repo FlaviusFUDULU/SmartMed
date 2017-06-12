@@ -12,16 +12,32 @@ public class UserFamily implements Serializable{
     private String firstName;
     private String lastName;
     private String pacientUID;
+    private String uId;
+    private String activated;
 
 
-    public UserFamily(String email, String firstName, String lastName, String pacientUID) {
+    public UserFamily(String email, String firstName, String lastName, String pacientUID, String uId) {
+
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.pacientUID = pacientUID;
+        this.uId = uId;
     }
 
     public UserFamily() {
+    }
+
+    public void setActivated(String activated) {
+        this.activated = activated;
+    }
+
+    public String getActivated() {
+        return activated;
+    }
+
+    public String getuId() {
+        return uId;
     }
 
     public String getEmail() {

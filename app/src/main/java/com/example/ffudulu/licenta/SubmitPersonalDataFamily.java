@@ -121,7 +121,7 @@ public class SubmitPersonalDataFamily extends Activity {
                                         UserFamily userFamily = new UserFamily(
                                                 firebaseUser.getEmail(),
                                                 familyFirstNme,familyLastName,
-                                                familyPacientUID
+                                                familyPacientUID,firebaseUser.getUid()
                                         );
 
 

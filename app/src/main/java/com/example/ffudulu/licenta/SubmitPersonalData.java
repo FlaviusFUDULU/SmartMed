@@ -34,8 +34,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import users.UserMedic;
@@ -193,9 +195,18 @@ public class SubmitPersonalData extends Activity {
                                                 firebaseUser.getUid(), firebaseUser.getEmail(),
                                                 firstName, hospitalName, lastName,
                                                 rank, sectionName, cnp, id, address, phoneNumber,
-                                                dateBirth);
+                                                dateBirth, photoUrl.toString());
+
+                                        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                        Date date = new Date();
+
+                                        Notification notif = new Notification(
+                                            "Cont nou de asistent creat", userMedic, "Doctor Only",
+                                                "1", "New Medic", dateFormat.format(date).toString()
+                                        );
 
                                         savePersonalData(firebaseUser, userMedic);
+                                        saveNotification(notif);
 
                                         Toast.makeText(SubmitPersonalData.this,
                                                 "înregistrare reușită!" ,
@@ -323,6 +334,11 @@ public class SubmitPersonalData extends Activity {
 
     private void savePersonalData(FirebaseUser firebaseUser, UserMedic userMedic){
         databaseRef.child("Users").child(userMedic.getRank()).child(firebaseUser.getUid()).setValue(userMedic);
+    }
+
+    private void saveNotification(Notification notif){
+        databaseRef.child("Notifications").child(notif.getDateAndTime().toString().replace("/","")
+                .replace(" ","").replace(":","")).setValue(notif);
     }
 
     private void updateLabel() {

@@ -107,7 +107,9 @@ public class Initialization extends Activity {
                                                         dss.child(firebaseUser.getUid())
                                                                 .getValue(UserMedic.class).getPhoneNumber(),
                                                         dss.child(firebaseUser.getUid())
-                                                                .getValue(UserMedic.class).getDateOfBirth()
+                                                                .getValue(UserMedic.class).getDateOfBirth(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserMedic.class).getPhotoUrl()
                                                 );
                                                 cacheData();
                                                 mProgressBarLogin.setVisibility(View.GONE);
@@ -217,8 +219,12 @@ public class Initialization extends Activity {
                                                         dss.child(firebaseUser.getUid())
                                                                 .getValue(UserFamily.class).getFirstName(),
                                                         dss.child(firebaseUser.getUid())
-                                                                .getValue(UserFamily.class).getPacientUID()
+                                                                .getValue(UserFamily.class).getPacientUID(),
+                                                        dss.child(firebaseUser.getUid())
+                                                                .getValue(UserFamily.class).getuId()
                                                 );
+                                                userFamily.setActivated(dss.child(firebaseUser.getUid())
+                                                        .getValue(UserFamily.class).getActivated());
                                                 cacheData();
                                                 Intent mDrawer = new Intent(Initialization.this, MainDrawer.class);
                                                 mProgressBarLogin.setVisibility(View.GONE);

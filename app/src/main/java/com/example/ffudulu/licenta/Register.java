@@ -22,6 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.kosalgeek.android.caching.FileCacher;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import users.UserPersonalData;
 
@@ -36,6 +39,8 @@ public class Register extends Activity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private DateFormat dateFormat;
 
     private final FileCacher<String> userCacherType = new FileCacher<>(Register.this, "type");
 
@@ -161,13 +166,27 @@ public class Register extends Activity {
         startActivity(mSubmitFamily);
     }
 
-    private void savePersonalData(FirebaseUser firebaseUser, UserPersonalData userPacient,
-                                                                    DatabaseReference databaseRef){
+    private void savePersonalData(FirebaseUser firebaseUser, final UserPersonalData userPacient,
+                                  final DatabaseReference databaseRef){
         databaseRef.child("Users").child("Pacient").child(firebaseUser.getUid())
                 .setValue(userPacient).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                goToPacientPersonalData();
+
+                dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                Date date = new Date();
+                Notification notif = new Notification(
+                        "Cont nou de pacient creat", userPacient, "Staff Only",
+                        "1", "New Pacient", dateFormat.format(date).toString()
+                );
+                databaseRef.child("Notifications").child(notif.getDateAndTime().toString().replace("/","")
+                        .replace(" ","").replace(":","")).setValue(notif)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        goToPacientPersonalData();
+                    }
+                });
             }
         });
     }

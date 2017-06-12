@@ -20,10 +20,11 @@ public class UserMedic implements Serializable{
     private String address;
     private String phoneNumber;
     private String dateOfBirth;
+    private String photoUrl;
 
     public UserMedic(String uId, String email, String firstName, String hospitalName,
                      String lastName, String rank, String sectionName, String cnp, String id,
-                     String address, String phoneNumber, String dateOfBirth) {
+                     String address, String phoneNumber, String dateOfBirth, String photoUrl) {
         this.uId = uId;
         this.email = email;
         this.firstName = firstName;
@@ -36,6 +37,7 @@ public class UserMedic implements Serializable{
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
+        this.photoUrl = photoUrl;
     }
 
     public String getPhoneNumber() {
@@ -43,6 +45,10 @@ public class UserMedic implements Serializable{
     }
 
     public UserMedic() {
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
     public String getDateOfBirth() {
