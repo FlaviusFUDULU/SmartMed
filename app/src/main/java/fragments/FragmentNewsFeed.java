@@ -3,6 +3,7 @@ package fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class FragmentNewsFeed extends Fragment {
     private FileCacher<String> actionCacher;
     private FileCacher<String> actionCacherDrawer;
     private FileCacher<String> userCacherType;
+    private FileCacher<Notification> notifCacher;
 
 
     @Override
@@ -86,38 +88,75 @@ public class FragmentNewsFeed extends Fragment {
                     protected void populateViewHolder(final PersonalDataHolder viewHolder,
                                                       final Notification model, int position) {
                         try {
-                            if (userCacherType.readCache().contains("Staff")){
-                                if (model.getType().contains("New Medic")) {
-                                    viewHolder.setName(model.getUserMedic().getFirstName() + " " +
-                                            model.getUserMedic().getLastName());
-                                    viewHolder.setMessage(model.getMessage());
-                                    viewHolder.setPhoto(model.getUserMedic().getPhotoUrl());
-                                    viewHolder.mNewInternare.setVisibility(View.GONE);
-                                }
-                                if (model.getType().contains("New Pacient")){
-                                    viewHolder.setName(model.getUserPacient().getEmail());
-                                    viewHolder.setMessage(model.getMessage());
-                                    //viewHolder.setPhoto(model.getUserMedic().getPhotoUrl());
-                                    viewHolder.mNewInternare.setVisibility(View.VISIBLE);
-                                    viewHolder.mNewInternare
-                                                    .setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            try {
-                                                userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
-                                                userPacientUidCacher.writeCache(model.getUserPacient().getuId().toString());
-                                                userPacientCacher = new FileCacher<>(getActivity(), model.getUserPacient().getuId());
-                                                userPacientCacher.writeCache(model.getUserPacient());
+                            if(model.getHandeled() == null || !model.getHandeled().contains("Yes")) {
+                                if (userCacherType.readCache().contains("Staff")) {
+                                    if (model.getType().contains("New Medic")) {
+                                        viewHolder.setName(model.getUserMedic().getFirstName() + " " +
+                                                model.getUserMedic().getLastName());
+                                        viewHolder.setMessage(model.getMessage());
+                                        viewHolder.setPhoto(model.getUserMedic().getPhotoUrl());
+                                        viewHolder.mNewInternare.setVisibility(View.GONE);
+                                        viewHolder.mgoToPacient.setVisibility(View.GONE);
+                                    }
+                                    if (model.getType().contains("New Pacient")) {
+                                        viewHolder.setName(model.getUserPacient().getEmail());
+                                        viewHolder.setMessage(model.getMessage());
+                                        //viewHolder.setPhoto(model.getUserMedic().getPhotoUrl());
+                                        viewHolder.mNewInternare.setVisibility(View.VISIBLE);
+                                        viewHolder.mgoToPacient.setVisibility(View.GONE);
+                                        viewHolder.mNewInternare
+                                                .setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        try {
+                                                            userPacientUidCacher = new FileCacher<>(getActivity(), "UID");
+                                                            userPacientUidCacher.writeCache(model.getUserPacient().getuId().toString());
+                                                            userPacientCacher = new FileCacher<>(getActivity(), model.getUserPacient().getuId());
+                                                            userPacientCacher.writeCache(model.getUserPacient());
+                                                            notifCacher = new FileCacher<>(getActivity(), "notif");
+                                                            notifCacher.writeCache(model);
 
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                            Intent mSubmitData = new Intent(getActivity(), SubmitPersonalDataPacient.class);
-                                            startActivity(mSubmitData);
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        Intent mSubmitData = new Intent(getActivity(), SubmitPersonalDataPacient.class);
+                                                        startActivity(mSubmitData);
+                                                    }
+                                                });
+
+                                    }
+                                    if(model.getType().contains("Asistenta Medicala")) {
+                                        viewHolder.setName(model.getUserPacient().getFirstName() + " "
+                                                + model.getUserPacient().getLastName());
+                                        viewHolder.mNewInternare.setVisibility(View.GONE);
+
+                                        viewHolder.setMessage(model.getMessage());
+                                        viewHolder.setPhoto(model.getUserPacient().getPhotoUrl());
+                                        if (model.getHandeled().contains("accesed")) {
+                                            viewHolder.mgoToPacient.setVisibility(View.VISIBLE);
+                                            viewHolder.mgoToPacient.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    Notification notif = model;
+                                                    notif.setHandeled("In progress");
+                                                    mRef.child(notif.getDateAndTime().toString().replace("/", "")
+                                                            .replace(" ", "").replace(":", "")).setValue(notif);
+                                                    notifCacher = new FileCacher<>(getActivity(), "notif");
+                                                    try {
+                                                        notifCacher.writeCache(model);
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            });
+                                        } else if (model.getHandeled().contains("In progress")){
+                                            viewHolder.setMessage(model.getMessage()+"\nIn curs...");
+                                            viewHolder.mgoToPacient.setVisibility(View.GONE);
                                         }
-                                    });
-
+                                    }
                                 }
+                            } else if (model.getHandeled().contains("Yes")){
+                                viewHolder.mCard.setVisibility(View.GONE);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -138,6 +177,8 @@ public class FragmentNewsFeed extends Fragment {
         TextView mMessage;
         ImageView mProfilePic;
         ImageView mNewInternare;
+        CardView mCard;
+        ImageView mgoToPacient;
 
 
         public PersonalDataHolder(View itemView) {
@@ -149,6 +190,8 @@ public class FragmentNewsFeed extends Fragment {
             mMessage = (TextView) mView.findViewById(R.id.NewsFeedTmp_message);
             mProfilePic = (ImageView) mView.findViewById(R.id.NewsFeedTmp_photo);
             mNewInternare = (ImageView) mView.findViewById(R.id.NewsFeedTmp_newInternare);
+            mCard = (CardView) mView.findViewById(R.id.NewFeedTmp_cardViewNume);
+            mgoToPacient = (ImageView) mView.findViewById(R.id.NewsFeedTmp_call);
 
         }
 

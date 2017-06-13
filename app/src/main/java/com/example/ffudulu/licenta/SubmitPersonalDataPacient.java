@@ -98,6 +98,7 @@ public class SubmitPersonalDataPacient extends Activity {
 
     private FileCacher<UserPersonalData> userCacherPacient;
     private FileCacher<String> userPacientUidCacher;
+    private FileCacher<Notification> notifCacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,6 +218,16 @@ public class SubmitPersonalDataPacient extends Activity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    notifCacher = new FileCacher<>(SubmitPersonalDataPacient.this, "notif");
+                    try {
+                        Notification notif  = notifCacher.readCache();
+                        notif.setHandeled("Yes");
+                        databaseRef.child("Notifications").child(notif.getDateAndTime().toString().replace("/","")
+                                .replace(" ","").replace(":","")).setValue(notif);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
 //                                    }
                     Intent mInitialize = new Intent(SubmitPersonalDataPacient.this, MainDrawer.class);
                     startActivity(mInitialize);

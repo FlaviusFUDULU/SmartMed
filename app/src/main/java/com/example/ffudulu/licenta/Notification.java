@@ -1,5 +1,7 @@
 package com.example.ffudulu.licenta;
 
+import java.io.Serializable;
+
 import users.UserMedic;
 import users.UserPersonalData;
 
@@ -7,7 +9,7 @@ import users.UserPersonalData;
  * Created by ffudulu on 12-Jun-17.
  */
 
-public class Notification {
+public class Notification implements Serializable {
     private String message;
     private UserMedic userMedic;
     private UserPersonalData userPacient;

@@ -110,7 +110,7 @@
         app:border_width="2dp"
         app:border_color="#FFF"
         app:layout_anchorGravity="right|center"
-        android:src="@mipmap/sign_out_icon"
+        android:src="@mipmap/ic_externare"
 
     />
     <ImageView
@@ -123,7 +123,7 @@
         app:border_color="#FFF"
         android:layout_marginRight="60dp"
         app:layout_anchorGravity="left|center"
-        android:src="@mipmap/ic_receipt_white_24dp"
+        android:src="@mipmap/ic_new_treatment"
         />
 
     <android.support.v7.widget.RecyclerView

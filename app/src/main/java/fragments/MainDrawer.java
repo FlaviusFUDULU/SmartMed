@@ -214,11 +214,23 @@ public class MainDrawer extends AppCompatActivity
                 .into(mAccountImageView);
 
         //end
-        FragmentNewsFeed fragmentNewsFeed = new FragmentNewsFeed();
-        android.support.v4.app.FragmentTransaction fragmentTransaction =
-                getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_fl_content, fragmentNewsFeed);
-        fragmentTransaction.commit();
+        try {
+            if (userCacherType.readCache().contains("Staff")) {
+                FragmentNewsFeed fragmentNewsFeed = new FragmentNewsFeed();
+                android.support.v4.app.FragmentTransaction fragmentTransaction =
+                        getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_fl_content, fragmentNewsFeed);
+                fragmentTransaction.commit();
+            } else if (userCacherType.readCache().contains("Pacient")){
+                FragmentMainDrawerPacient fragmentNewsFeedPacient = new FragmentMainDrawerPacient();
+                android.support.v4.app.FragmentTransaction fragmentTransaction =
+                        getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_fl_content, fragmentNewsFeedPacient);
+                fragmentTransaction.commit();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -263,7 +275,7 @@ public class MainDrawer extends AppCompatActivity
 
         if(id == R.id.nav_home) {
             //Intent mDrawer = new Intent(this,MainDrawer.class);
-            //finish();
+            finish();
 //            MainDrawer fragMain = new MainDrawer();
 //            android.support.v4.app.FragmentTransaction fragmentTransaction =
 //                    getSupportFragmentManager().beginTransaction();

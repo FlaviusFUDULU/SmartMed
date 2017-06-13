@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/NewsFeedTmp.photo"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="5dp"
                     android:text="Nume:"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/colorPrimaryDark" />
@@ -42,10 +42,12 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/NewsFeedTmp.message"
                     android:text="Test"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_below="@+id/NewsFeedTmp.photo"
+                    android:layout_toRightOf="@+id/NewsFeedTmp.photo"
+                    android:layout_below="@+id/NewsFeedTmp.fullName"
                     android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="italic"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
                 <ImageView
                     android:layout_width="37dp"
@@ -55,6 +57,14 @@
                     android:layout_centerInParent="true"
                     android:layout_marginRight="5dp"
                     android:src="@mipmap/ic_internare_white"/>
+                <ImageView
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:id="@+id/NewsFeedTmp.call"
+                    android:layout_toEndOf="@+id/NewsFeedTmp.fullName"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@mipmap/ic_aprove"/>
 
             </RelativeLayout>
 
