@@ -99,18 +99,21 @@
         app:border_color="#FFF"
         app:layout_scrollFlags="scroll"
         app:layout_anchorGravity="top|center_horizontal"
-
+        android:maxWidth="96dp"
+        android:maxHeight="96dp"
         />
     <ImageView
         android:id="@+id/PacientAccountGeneral.profile_image_small"
-        android:layout_width="96dp"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         app:layout_anchor="@id/PacientAccountGeneral.title_container"
         android:elevation="8dp"
         app:border_width="2dp"
         app:border_color="#FFF"
         app:layout_anchorGravity="left|center"
-
+        android:maxWidth="60dp"
+        android:maxHeight="60dp"
+        android:layout_marginLeft="15dp"
         />
 
 </android.support.design.widget.CoordinatorLayout>

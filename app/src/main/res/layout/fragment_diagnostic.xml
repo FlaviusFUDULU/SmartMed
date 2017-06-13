@@ -88,7 +88,8 @@
         app:border_color="#FFF"
         app:layout_scrollFlags="scroll"
         app:layout_anchorGravity="top|center_horizontal"
-
+        android:maxWidth="96dp"
+        android:maxHeight="96dp"
         />
     <ImageView
         android:id="@+id/PacientTreatment.profile_image_small"
@@ -99,7 +100,8 @@
         app:border_width="2dp"
         app:border_color="#FFF"
         app:layout_anchorGravity="left|center"
-
+        android:maxWidth="96dp"
+        android:maxHeight="?attr/actionBarSize"
         />
     <ImageView
         android:id="@+id/PacientTreatment.profile_release"

@@ -1,14 +1,18 @@
 package fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ffudulu.licenta.Notification;
 import com.example.ffudulu.licenta.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +46,7 @@ public class FragmentMainDrawerPacient extends android.support.v4.app.Fragment {
     private Notification notif = null;
     private FileCacher<Notification> notifCacher;
     private FileCacher<String> ownNotifCacher;
+    private ProgressBar mProgressBarUpload;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,12 +57,13 @@ public class FragmentMainDrawerPacient extends android.support.v4.app.Fragment {
         mMessage = (TextView) view.findViewById(R.id.MainDrawerPacient_message);
         mAnulare = (ImageView) view.findViewById(R.id.MainDrawerPacient_Anulare);
         mFinalizare = (ImageView) view.findViewById(R.id.MainDrawerPacient_Finalizare);
+        mProgressBarUpload = (ProgressBar) view.findViewById(R.id.MainDrawerPacient_progressBarUpload);
 
         mMessage.setVisibility(View.GONE);
         mAnulare.setVisibility(View.GONE);
         mFinalizare.setVisibility(View.GONE);
         databaseRef = FirebaseDatabase.getInstance().getReference();
-        databaseRef.addValueEventListener(new ValueEventListener() {
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ownNotifCacher = new FileCacher<>(getActivity(), "notifOwn");
@@ -100,7 +106,16 @@ public class FragmentMainDrawerPacient extends android.support.v4.app.Fragment {
             public void onClick(View view) {
                 ownNotifCacher = new FileCacher<>(getActivity(), "notifOwn");
                 try {
-                    databaseRef.child("Notifications").child(ownNotifCacher.readCache()).removeValue();
+                    disableAll();
+                    mProgressBarUpload.setVisibility(View.VISIBLE);
+                    databaseRef.child("Notifications").child(ownNotifCacher.readCache()).removeValue()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    enableAll();
+                                    mProgressBarUpload.setVisibility(View.GONE);
+                                }
+                            });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -112,7 +127,16 @@ public class FragmentMainDrawerPacient extends android.support.v4.app.Fragment {
             public void onClick(View view) {
                 ownNotifCacher = new FileCacher<>(getActivity(), "notifOwn");
                 try {
-                    databaseRef.child("Notifications").child(ownNotifCacher.readCache()).removeValue();
+                    disableAll();
+                    mProgressBarUpload.setVisibility(View.VISIBLE);
+                    databaseRef.child("Notifications").child(ownNotifCacher.readCache()).removeValue()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    enableAll();
+                                    mProgressBarUpload.setVisibility(View.GONE);
+                                }
+                            });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -139,8 +163,6 @@ public class FragmentMainDrawerPacient extends android.support.v4.app.Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                databaseRef.child("Notifications").child(notif.getDateAndTime().toString().replace("/","")
-                        .replace(" ","").replace(":","")).setValue(notif);
                 mMessage.setText("Se așteaptă răspuns de la un cadru medical...");
                 mMessage.setVisibility(View.VISIBLE);
                 ownNotifCacher = new FileCacher<>(getActivity(), "notifOwn");
@@ -153,9 +175,33 @@ public class FragmentMainDrawerPacient extends android.support.v4.app.Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                disableAll();
+                mProgressBarUpload.setVisibility(View.VISIBLE);
+                databaseRef.child("Notifications").child(notif.getDateAndTime().toString().replace("/","")
+                        .replace(" ","").replace(":","")).setValue(notif).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        enableAll();
+                        mProgressBarUpload.setVisibility(View.GONE);
+                    }
+                });
 
             }
         });
         return view;
+    }
+
+    private void disableAll(){
+        mCall.setVisibility(View.GONE);
+        mMessage.setVisibility(View.GONE);
+        mAnulare.setVisibility(View.GONE);
+        mFinalizare.setVisibility(View.GONE);
+    }
+
+    private void enableAll(){
+        mCall.setVisibility(View.VISIBLE);
+        mMessage.setVisibility(View.VISIBLE);
+        mAnulare.setVisibility(View.VISIBLE);
+        mFinalizare.setVisibility(View.VISIBLE);
     }
 }

@@ -164,8 +164,9 @@ public class FragmentAccountPacient extends Fragment
         mProfileImage = (ImageView) view.findViewById(R.id.PacientAccount_profile_image);
         try {
             Picasso.with(getActivity()).load(userCacherPacient.readCache().getPhotoUrl())
-                    .transform(new CircleTransform()).noFade()
-    //                .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
+                    .transform(new CircleTransform())
+                    .centerInside().resize(200, 200)
+                    .noFade()
                     .into(mProfileImage);
         } catch (IOException e) {
             e.printStackTrace();
@@ -199,8 +200,9 @@ public class FragmentAccountPacient extends Fragment
             File myProfilePicSmall = new File(directory, firebaseUser.getUid());
             try {
                 Picasso.with(getActivity()).load(userCacherPacient.readCache().getPhotoUrl())
-                        .transform(new CircleTransform()).noFade()
-    //                 .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
+                        .transform(new CircleTransform())
+                        .centerInside().resize(150, 150)
+                        .noFade()
                         .into(mProfileImageSmall);
             } catch (IOException e) {
                 e.printStackTrace();

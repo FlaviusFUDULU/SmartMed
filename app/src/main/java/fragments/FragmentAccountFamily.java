@@ -93,8 +93,9 @@ public class FragmentAccountFamily extends Fragment
         File myProfilePic = new File(directory, firebaseUser.getUid());
         mProfileImage = (ImageView) view.findViewById(R.id.FamilyAccount_profile_image);
         Picasso.with(getActivity()).load(myProfilePic)
-                .transform(new CircleTransform()).noFade()
-//                .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
+                .transform(new CircleTransform())
+                .centerInside().resize(200, 200)
+                .noFade()
                 .into(mProfileImage);
 
 
@@ -125,8 +126,9 @@ public class FragmentAccountFamily extends Fragment
             File directory = cw.getDir("SmartMedProfile", Context.MODE_PRIVATE);
             File myProfilePicSmall = new File(directory, firebaseUser.getUid());
             Picasso.with(getActivity()).load(myProfilePicSmall)
-                    .transform(new CircleTransform()).noFade()
-//                 .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
+                    .transform(new CircleTransform())
+                    .centerInside().resize(150, 150)
+                    .noFade()
                     .into(mProfileImageSmall);
 
         }

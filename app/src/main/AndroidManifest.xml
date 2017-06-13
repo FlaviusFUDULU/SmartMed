@@ -19,7 +19,7 @@
         <activity android:name=".Register" />
         <activity
             android:name="fragments.MainDrawer"
-            android:label="@string/title_activity_main_drawer"
+            android:label="Notificări"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SubmitPersonalData" />
         <activity

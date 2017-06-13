@@ -255,8 +255,9 @@ public class FragmentRoomsPacients extends Fragment {
         public void setPicture(String photoUrl){
             ImageView mImgProfilePic = (ImageView) mView.findViewById(R.id.AllPacientsRoom_photo);
             Picasso.with(mView.getContext()).load(photoUrl)
-                    .transform(new CircleTransform()).noFade()
-//                .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
+                    .transform(new CircleTransform())
+                    .centerInside().resize(mImgProfilePic.getMaxWidth(), mImgProfilePic.getMaxHeight())
+                    .noFade()
                     .into(mImgProfilePic);
         }
 

@@ -143,8 +143,9 @@ public class FragmentTreatmentPacient extends Fragment implements AppBarLayout.O
         mProfileImage = (ImageView) view.findViewById(R.id.PacientTreatment_profile_image);
         try {
             Picasso.with(getActivity()).load(userCacherPacient.readCache().getPhotoUrl())
-                    .transform(new CircleTransform()).noFade()
-                    //                .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
+                    .transform(new CircleTransform())
+                    .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
+                    .noFade()
                     .into(mProfileImage);
         } catch (IOException e) {
             e.printStackTrace();
@@ -227,9 +228,9 @@ public class FragmentTreatmentPacient extends Fragment implements AppBarLayout.O
             }
             try {
                 Picasso.with(getActivity()).load(userCacherPacient.readCache().getPhotoUrl())
-                        .transform(new CircleTransform()).noFade()
-                        //                 .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
-                        .into(mProfileImageSmall);
+                        .transform(new CircleTransform())
+                        .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
+                        .noFade();
             } catch (IOException e) {
                 e.printStackTrace();
             }

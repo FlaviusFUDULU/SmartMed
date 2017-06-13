@@ -1,6 +1,7 @@
 package fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import com.example.ffudulu.licenta.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +49,7 @@ public class FragmentWhoIsSeeing extends Fragment {
     private FileCacher<String> actionCacherDrawer;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,7 +66,6 @@ public class FragmentWhoIsSeeing extends Fragment {
         mRecyclerViewALlPacients = (RecyclerView) view.findViewById(R.id.RecycleWhoSeePage);
 //        mRecyclerViewALlPacients.setHasFixedSize(true);
         mRecyclerViewALlPacients.setLayoutManager(new LinearLayoutManager(getActivity()));
-
 
         return view;
     }
@@ -88,9 +91,16 @@ public class FragmentWhoIsSeeing extends Fragment {
                             //viewHolder.setPicture(model.get);
                             viewHolder.mAccept.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(View view) {
+                                public void onClick(final View view) {
+                                    view.setEnabled(false);
                                     model.setActivated("Yes");
-                                    mRef.child(model.getuId()).setValue(model);
+                                    mRef.child(model.getuId()).setValue(model)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            getActivity().finish();
+                                        }
+                                    });
                                 }
                             });
 
@@ -98,7 +108,14 @@ public class FragmentWhoIsSeeing extends Fragment {
                                 @Override
                                 public void onClick(View view) {
                                     model.setActivated("No");
-                                    mRef.child(model.getuId()).setValue(model);
+                                    view.setEnabled(false);
+                                    mRef.child(model.getuId()).setValue(model).
+                                            addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            getActivity().finish();
+                                        }
+                                    });
                                 }
                             });
 

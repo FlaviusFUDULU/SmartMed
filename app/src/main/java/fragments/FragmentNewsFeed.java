@@ -204,8 +204,9 @@ public class FragmentNewsFeed extends Fragment {
 
         }public void setPhoto(String photoUrl){
             Picasso.with(mView.getContext()).load(photoUrl)
-                    .transform(new CircleTransform()).noFade()
-//                .centerInside().resize(mProfileImage.getMaxWidth(), mProfileImage.getMaxHeight())
+                    .transform(new CircleTransform())
+                    .centerInside().resize(mProfilePic.getMaxWidth(), mProfilePic.getMaxHeight())
+                    .noFade()
                     .into(mProfilePic);
 
         }

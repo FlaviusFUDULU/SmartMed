@@ -23,7 +23,9 @@
             android:layout_width="37dp"
             android:layout_height="37dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="3dp"/>
+            android:layout_marginTop="3dp"
+            android:maxWidth="37dp"
+            android:maxHeight="37dp"/>
 
         <TextView
             android:id="@+id/AllPacientsRoom.fullName"
